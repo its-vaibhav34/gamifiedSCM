@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Quest - Learn Git Through Gamification</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fa-brands fa-git-alt"></i>
+            <h1>Git Quest</h1>
+        </div>
+        <nav>
+            <ul>
+                <li class="active"><a href="#home">Home</a></li>
+                <li><a href="#challenges">Challenges</a></li>
+                <li><a href="#leaderboard">Leaderboard</a></li>
+                <li><a href="#profile">Profile</a></li>
+            </ul>
+        </nav>
+        <div class="user-info">
+            <div class="xp-container">
+                <span class="xp-label">XP:</span>
+                <span class="xp-value">120</span>
+            </div>
+            <div class="level-container">
+                <span class="level-label">Level:</span>
+                <span class="level-value">2</span>
+            </div>
+            <div class="user-avatar">
+                <img src="/placeholder.svg?height=40&width=40" alt="User Avatar">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="active-section">
+            <div class="hero">
+                <h2>Master Git & GitHub Through Interactive Challenges</h2>
+                <p>Learn version control, collaboration workflows, and SCM concepts through hands-on exercises and gamified learning.</p>
+                <button class="cta-button" id="start-journey">Start Your Journey</button>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fa-solid fa-code-branch"></i>
+                    <h3>Interactive Challenges</h3>
+                    <p>Practice real-world Git scenarios including branching, merging, and resolving conflicts.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-trophy"></i>
+                    <h3>Earn Rewards</h3>
+                    <p>Gain XP, unlock badges, and climb the leaderboard as you master new skills.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-users"></i>
+                    <h3>Collaborative Learning</h3>
+                    <p>Simulate team environments and practice pull request workflows.</p>
+                </div>
+            </div>
+
+            <div class="learning-path">
+                <h2>Your Learning Path</h2>
+                <div class="path-container">
+                    <div class="path-node completed">
+                        <div class="node-icon"><i class="fa-solid fa-check"></i></div>
+                        <div class="node-content">
+                            <h4>Git Basics</h4>
+                            <p>Learn init, add, commit</p>
+                        </div>
+                    </div>
+                    <div class="path-node current">
+                        <div class="node-icon"><i class="fa-solid fa-arrow-right"></i></div>
+                        <div class="node-content">
+                            <h4>Branching</h4>
+                            <p>Create and manage branches</p>
+                        </div>
+                    </div>
+                    <div class="path-node">
+                        <div class="node-icon"><i class="fa-solid fa-lock"></i></div>
+                        <div class="node-content">
+                            <h4>Merge Conflicts</h4>
+                            <p>Resolve merge conflicts</p>
+                        </div>
+                    </div>
+                    <div class="path-node">
+                        <div class="node-icon"><i class="fa-solid fa-lock"></i></div>
+                        <div class="node-content">
+                            <h4>Remote Repositories</h4>
+                            <p>Work with GitHub</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="challenges" class="hidden-section">
+            <h2>Git Challenges</h2>
+            <div class="difficulty-filter">
+                <button class="filter-btn active" data-difficulty="all">All</button>
+                <button class="filter-btn" data-difficulty="beginner">Beginner</button>
+                <button class="filter-btn" data-difficulty="intermediate">Intermediate</button>
+                <button class="filter-btn" data-difficulty="advanced">Advanced</button>
+            </div>
+
+            <div class="challenges-grid">
+                <div class="challenge-card" data-difficulty="beginner">
+                    <div class="challenge-header">
+                        <span class="difficulty beginner">Beginner</span>
+                        <span class="xp">+10 XP</span>
+                    </div>
+                    <h3>First Commit</h3>
+                    <p>Learn how to initialize a repository and make your first commit.</p>
+                    <button class="start-challenge-btn">Start Challenge</button>
+                </div>
+
+                <div class="challenge-card" data-difficulty="beginner">
+                    <div class="challenge-header">
+                        <span class="difficulty beginner">Beginner</span>
+                        <span class="xp">+15 XP</span>
+                    </div>
+                    <h3>Tracking Changes</h3>
+                    <p>Understand how to track file changes and view commit history.</p>
+                    <button class="start-challenge-btn">Start Challenge</button>
+                </div>
+
+                <div class="challenge-card" data-difficulty="intermediate">
+                    <div class="challenge-header">
+                        <span class="difficulty intermediate">Intermediate</span>
+                        <span class="xp">+25 XP</span>
+                    </div>
+                    <h3>Branch Management</h3>
+                    <p>Create, switch, and merge branches to organize your work.</p>
+                    <button class="start-challenge-btn">Start Challenge</button>
+                </div>
+
+                <div class="challenge-card" data-difficulty="intermediate">
+                    <div class="challenge-header">
+                        <span class="difficulty intermediate">Intermediate</span>
+                        <span class="xp">+30 XP</span>
+                    </div>
+                    <h3>Merge Conflicts</h3>
+                    <p>Learn to identify and resolve merge conflicts effectively.</p>
+                    <button class="start-challenge-btn">Start Challenge</button>
+                </div>
+
+                <div class="challenge-card" data-difficulty="advanced">
+                    <div class="challenge-header">
+                        <span class="difficulty advanced">Advanced</span>
+                        <span class="xp">+50 XP</span>
+                    </div>
+                    <h3>Rebasing Workflow</h3>
+                    <p>Master the art of rebasing to maintain a clean project history.</p>
+                    <button class="start-challenge-btn">Start Challenge</button>
+                </div>
+
+                <div class="challenge-card" data-difficulty="advanced">
+                    <div class="challenge-header">
+                        <span class="difficulty advanced">Advanced</span>
+                        <span class="xp">+60 XP</span>
+                    </div>
+                    <h3>CI/CD Integration</h3>
+                    <p>Set up a basic CI/CD pipeline with GitHub Actions.</p>
+                    <button class="start-challenge-btn">Start Challenge</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="leaderboard" class="hidden-section">
+            <h2>Leaderboard</h2>
+            <div class="leaderboard-tabs">
+                <button class="tab-btn active" data-period="weekly">Weekly</button>
+                <button class="tab-btn" data-period="monthly">Monthly</button>
+                <button class="tab-btn" data-period="alltime">All Time</button>
+            </div>
+
+            <div class="leaderboard-container">
+                <div class="top-performers">
+                    <div class="top-performer second-place">
+                        <div class="rank">2</div>
+                        <div class="user-avatar">
+                            <img src="/placeholder.svg?height=60&width=60" alt="Second Place">
+                        </div>
+                        <div class="user-name">JaneDev</div>
+                        <div class="user-xp">1850 XP</div>
+                    </div>
+                    <div class="top-performer first-place">
+                        <div class="rank">1</div>
+                        <div class="user-avatar">
+                            <img src="/placeholder.svg?height=80&width=80" alt="First Place">
+                        </div>
+                        <div class="user-name">GitMaster</div>
+                        <div class="user-xp">2340 XP</div>
+                    </div>
+                    <div class="top-performer third-place">
+                        <div class="rank">3</div>
+                        <div class="user-avatar">
+                            <img src="/placeholder.svg?height=60&width=60" alt="Third Place">
+                        </div>
+                        <div class="user-name">CodeNinja</div>
+                        <div class="user-xp">1720 XP</div>
+                    </div>
+                </div>
+
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>User</th>
+                            <th>Level</th>
+                            <th>XP</th>
+                            <th>Badges</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>4</td>
+                            <td class="user-cell">
+                                <img src="/placeholder.svg?height=30&width=30" alt="User">
+                                <span>DevPro</span>
+                            </td>
+                            <td>8</td>
+                            <td>1680 XP</td>
+                            <td class="badges-cell">
+                                <i class="fa-solid fa-medal" title="Merge Master"></i>
+                                <i class="fa-solid fa-code-branch" title="Branch Expert"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td class="user-cell">
+                                <img src="/placeholder.svg?height=30&width=30" alt="User">
+                                <span>GitGuru</span>
+                            </td>
+                            <td>7</td>
+                            <td>1520 XP</td>
+                            <td class="badges-cell">
+                                <i class="fa-solid fa-code-branch" title="Branch Expert"></i>
+                            </td>
+                        </tr>
+                        <tr class="current-user">
+                            <td>6</td>
+                            <td class="user-cell">
+                                <img src="/placeholder.svg?height=30&width=30" alt="User">
+                                <span>You</span>
+                            </td>
+                            <td>2</td>
+                            <td>120 XP</td>
+                            <td class="badges-cell">
+                                <i class="fa-solid fa-star" title="First Commit"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td class="user-cell">
+                                <img src="/placeholder.svg?height=30&width=30" alt="User">
+                                <span>CodeCrafter</span>
+                            </td>
+                            <td>2</td>
+                            <td>110 XP</td>
+                            <td class="badges-cell">
+                                <i class="fa-solid fa-star" title="First Commit"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="profile" class="hidden-section">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="/placeholder.svg?height=120&width=120" alt="Profile Avatar">
+                </div>
+                <div class="profile-info">
+                    <h2>Your Profile</h2>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <span class="stat-value">2</span>
+                            <span class="stat-label">Level</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">120</span>
+                            <span class="stat-label">XP</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">3</span>
+                            <span class="stat-label">Challenges</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">1</span>
+                            <span class="stat-label">Badges</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <div class="profile-section">
+                    <h3>Your Badges</h3>
+                    <div class="badges-container">
+                        <div class="badge earned">
+                            <i class="fa-solid fa-star"></i>
+                            <span>First Commit</span>
+                        </div>
+                        <div class="badge locked">
+                            <i class="fa-solid fa-code-branch"></i>
+                            <span>Branch Expert</span>
+                        </div>
+                        <div class="badge locked">
+                            <i class="fa-solid fa-code-merge"></i>
+                            <span>Merge Master</span>
+                        </div>
+                        <div class="badge locked">
+                            <i class="fa-solid fa-code-pull-request"></i>
+                            <span>PR Pro</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3>Progress</h3>
+                    <div class="progress-container">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Level 3</span>
+                                <span>120/200 XP</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-container">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Completed "First Commit" Challenge</h4>
+                                <p>2 days ago</p>
+                            </div>
+                            <div class="activity-xp">+10 XP</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Completed "Tracking Changes" Challenge</h4>
+                                <p>1 day ago</p>
+                            </div>
+                            <div class="activity-xp">+15 XP</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Earned "First Commit" Badge</h4>
+                                <p>1 day ago</p>
+                            </div>
+                            <div class="activity-xp">+5 XP</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="challenge-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>First Commit Challenge</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="challenge-description">
+                        <h3>Objective</h3>
+                        <p>Initialize a Git repository and make your first commit.</p>
+                        
+                        <h3>Instructions</h3>
+                        <ol>
+                            <li>Initialize a new Git repository</li>
+                            <li>Create a new file called "index.html"</li>
+                            <li>Add the file to the staging area</li>
+                            <li>Commit the changes with a meaningful message</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="git-simulator">
+                        <div class="simulator-header">
+                            <h3>Git Terminal</h3>
+                        </div>
+                        <div class="terminal">
+                            <div class="terminal-output" id="terminal-output">
+                                <div class="output-line">Welcome to Git Quest Terminal!</div>
+                                <div class="output-line">Type 'help' to see available commands.</div>
+                            </div>
+                            <div class="terminal-input-container">
+                                <span class="prompt">$</span>
+                                <input type="text" id="terminal-input" placeholder="Enter Git command...">
+                            </div>
+                        </div>
+                        
+                        <div class="simulator-visualization">
+                            <div class="visualization-header">
+                                <h3>Repository Visualization</h3>
+                            </div>
+                            <div class="visualization-content">
+                                <div class="repo-status">
+                                    <div class="status-section">
+                                        <h4>Working Directory</h4>
+                                        <div class="file-list" id="working-directory">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Staging Area</h4>
+                                        <div class="file-list" id="staging-area">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Repository</h4>
+                                        <div class="commit-list" id="repository">
+                                            <!-- Commits will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-progress">
+                        <h3>Progress</h3>
+                        <div class="progress-steps">
+                            <div class="progress-step" data-step="init">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Initialize repository</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="create">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Create index.html</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="add">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Add to staging area</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="commit">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Commit changes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="hint-btn">Get Hint</button>
+                    <button id="submit-challenge">Complete Challenge</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fa-brands fa-git-alt"></i>
+                <span>Git Quest</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Help</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>&copy; 2023 Git Quest. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
