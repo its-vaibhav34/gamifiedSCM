@@ -114,7 +114,7 @@
                     </div>
                     <h3>First Commit</h3>
                     <p>Learn how to initialize a repository and make your first commit.</p>
-                    <button class="start-challenge-btn">Start Challenge</button>
+                    <button class="start-challenge-btn" data-challenge="first-commit">Start Challenge</button>
                 </div>
 
                 <div class="challenge-card" data-difficulty="beginner">
@@ -124,7 +124,7 @@
                     </div>
                     <h3>Tracking Changes</h3>
                     <p>Understand how to track file changes and view commit history.</p>
-                    <button class="start-challenge-btn">Start Challenge</button>
+                    <button class="start-challenge-btn" data-challenge="tracking">Start Challenge</button>
                 </div>
 
                 <div class="challenge-card" data-difficulty="intermediate">
@@ -134,7 +134,7 @@
                     </div>
                     <h3>Branch Management</h3>
                     <p>Create, switch, and merge branches to organize your work.</p>
-                    <button class="start-challenge-btn">Start Challenge</button>
+                    <button class="start-challenge-btn" data-challenge="branching">Start Challenge</button>
                 </div>
 
                 <div class="challenge-card" data-difficulty="intermediate">
@@ -144,7 +144,7 @@
                     </div>
                     <h3>Merge Conflicts</h3>
                     <p>Learn to identify and resolve merge conflicts effectively.</p>
-                    <button class="start-challenge-btn">Start Challenge</button>
+                    <button class="start-challenge-btn" data-challenge="merge">Start Challenge</button>
                 </div>
 
                 <div class="challenge-card" data-difficulty="advanced">
@@ -154,7 +154,7 @@
                     </div>
                     <h3>Rebasing Workflow</h3>
                     <p>Master the art of rebasing to maintain a clean project history.</p>
-                    <button class="start-challenge-btn">Start Challenge</button>
+                    <button class="start-challenge-btn" data-challenge="rebase">Start Challenge</button>
                 </div>
 
                 <div class="challenge-card" data-difficulty="advanced">
@@ -164,7 +164,7 @@
                     </div>
                     <h3>CI/CD Integration</h3>
                     <p>Set up a basic CI/CD pipeline with GitHub Actions.</p>
-                    <button class="start-challenge-btn">Start Challenge</button>
+                    <button class="start-challenge-btn" data-challenge="cicd">Start Challenge</button>
                 </div>
             </div>
         </section>
@@ -374,7 +374,9 @@
             </div>
         </section>
 
-        <div id="challenge-modal" class="modal">
+        <!-- Challenge Modals -->
+        <!-- First Commit Challenge Modal -->
+        <div id="challenge-modal-first-commit" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>First Commit Challenge</h2>
@@ -399,13 +401,13 @@
                             <h3>Git Terminal</h3>
                         </div>
                         <div class="terminal">
-                            <div class="terminal-output" id="terminal-output">
+                            <div class="terminal-output" id="terminal-output-first-commit">
                                 <div class="output-line">Welcome to Git Quest Terminal!</div>
                                 <div class="output-line">Type 'help' to see available commands.</div>
                             </div>
                             <div class="terminal-input-container">
                                 <span class="prompt">$</span>
-                                <input type="text" id="terminal-input" placeholder="Enter Git command...">
+                                <input type="text" id="terminal-input-first-commit" placeholder="Enter Git command...">
                             </div>
                         </div>
                         
@@ -417,19 +419,19 @@
                                 <div class="repo-status">
                                     <div class="status-section">
                                         <h4>Working Directory</h4>
-                                        <div class="file-list" id="working-directory">
+                                        <div class="file-list" id="working-directory-first-commit">
                                             <!-- Files will be added here dynamically -->
                                         </div>
                                     </div>
                                     <div class="status-section">
                                         <h4>Staging Area</h4>
-                                        <div class="file-list" id="staging-area">
+                                        <div class="file-list" id="staging-area-first-commit">
                                             <!-- Files will be added here dynamically -->
                                         </div>
                                     </div>
                                     <div class="status-section">
                                         <h4>Repository</h4>
-                                        <div class="commit-list" id="repository">
+                                        <div class="commit-list" id="repository-first-commit">
                                             <!-- Commits will be added here dynamically -->
                                         </div>
                                     </div>
@@ -441,7 +443,7 @@
                     <div class="challenge-progress">
                         <h3>Progress</h3>
                         <div class="progress-steps">
-                            <div class="progress-step" data-step="init">
+                            <div class="progress-step" data-step="init" data-challenge="first-commit">
                                 <div class="step-indicator">
                                     <i class="fa-regular fa-circle"></i>
                                 </div>
@@ -449,7 +451,7 @@
                                     <p>Initialize repository</p>
                                 </div>
                             </div>
-                            <div class="progress-step" data-step="create">
+                            <div class="progress-step" data-step="create" data-challenge="first-commit">
                                 <div class="step-indicator">
                                     <i class="fa-regular fa-circle"></i>
                                 </div>
@@ -457,7 +459,7 @@
                                     <p>Create index.html</p>
                                 </div>
                             </div>
-                            <div class="progress-step" data-step="add">
+                            <div class="progress-step" data-step="add" data-challenge="first-commit">
                                 <div class="step-indicator">
                                     <i class="fa-regular fa-circle"></i>
                                 </div>
@@ -465,7 +467,7 @@
                                     <p>Add to staging area</p>
                                 </div>
                             </div>
-                            <div class="progress-step" data-step="commit">
+                            <div class="progress-step" data-step="commit" data-challenge="first-commit">
                                 <div class="step-indicator">
                                     <i class="fa-regular fa-circle"></i>
                                 </div>
@@ -477,8 +479,652 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="hint-btn">Get Hint</button>
-                    <button id="submit-challenge">Complete Challenge</button>
+                    <button id="hint-btn-first-commit" class="hint-btn" data-challenge="first-commit">Get Hint</button>
+                    <button id="submit-challenge-first-commit" class="submit-challenge" data-challenge="first-commit">Complete Challenge</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tracking Changes Challenge Modal -->
+        <div id="challenge-modal-tracking" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Tracking Changes Challenge</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="challenge-description">
+                        <h3>Objective</h3>
+                        <p>Learn how to track file changes and view commit history.</p>
+                        
+                        <h3>Instructions</h3>
+                        <ol>
+                            <li>Modify an existing file (e.g., "index.html").</li>
+                            <li>Check the status of your repository using <code>git status</code>.</li>
+                            <li>View changes using <code>git diff</code>.</li>
+                            <li>Stage the modified file using <code>git add</code>.</li>
+                            <li>Commit the changes with a meaningful message.</li>
+                            <li>Check commit history using <code>git log</code>.</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="git-simulator">
+                        <div class="simulator-header">
+                            <h3>Git Terminal</h3>
+                        </div>
+                        <div class="terminal">
+                            <div class="terminal-output" id="terminal-output-tracking">
+                                <div class="output-line">Welcome to Git Quest Terminal!</div>
+                                <div class="output-line">Type 'help' to see available commands.</div>
+                                <div class="output-line">A repository has been initialized with index.html for you.</div>
+                            </div>
+                            <div class="terminal-input-container">
+                                <span class="prompt">$</span>
+                                <input type="text" id="terminal-input-tracking" placeholder="Enter Git command...">
+                            </div>
+                        </div>
+                        
+                        <div class="simulator-visualization">
+                            <div class="visualization-header">
+                                <h3>Repository Visualization</h3>
+                            </div>
+                            <div class="visualization-content">
+                                <div class="repo-status">
+                                    <div class="status-section">
+                                        <h4>Working Directory</h4>
+                                        <div class="file-list" id="working-directory-tracking">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Staging Area</h4>
+                                        <div class="file-list" id="staging-area-tracking">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Repository</h4>
+                                        <div class="commit-list" id="repository-tracking">
+                                            <!-- Commits will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-progress">
+                        <h3>Progress</h3>
+                        <div class="progress-steps">
+                            <div class="progress-step" data-step="modify" data-challenge="tracking">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Modify index.html</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="status" data-challenge="tracking">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Check status</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="diff" data-challenge="tracking">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>View changes</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="add" data-challenge="tracking">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Stage changes</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="commit" data-challenge="tracking">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Commit changes</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="log" data-challenge="tracking">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>View history</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="hint-btn-tracking" class="hint-btn" data-challenge="tracking">Get Hint</button>
+                    <button id="submit-challenge-tracking" class="submit-challenge" data-challenge="tracking">Complete Challenge</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Branch Management Challenge Modal -->
+        <div id="challenge-modal-branching" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Branch Management Challenge</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="challenge-description">
+                        <h3>Objective</h3>
+                        <p>Create, switch, and merge branches to organize your work.</p>
+                        
+                        <h3>Instructions</h3>
+                        <ol>
+                            <li>Create a new branch named "feature-branch".</li>
+                            <li>Switch to the new branch using <code>git checkout</code>.</li>
+                            <li>Modify or create a new file.</li>
+                            <li>Stage and commit the changes.</li>
+                            <li>Switch back to the main branch and merge the feature branch.</li>
+                            <li>Delete the feature branch after merging.</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="git-simulator">
+                        <div class="simulator-header">
+                            <h3>Git Terminal</h3>
+                        </div>
+                        <div class="terminal">
+                            <div class="terminal-output" id="terminal-output-branching">
+                                <div class="output-line">Welcome to Git Quest Terminal!</div>
+                                <div class="output-line">Type 'help' to see available commands.</div>
+                                <div class="output-line">A repository has been initialized with index.html for you.</div>
+                            </div>
+                            <div class="terminal-input-container">
+                                <span class="prompt">$</span>
+                                <input type="text" id="terminal-input-branching" placeholder="Enter Git command...">
+                            </div>
+                        </div>
+                        
+                        <div class="simulator-visualization">
+                            <div class="visualization-header">
+                                <h3>Repository Visualization</h3>
+                            </div>
+                            <div class="visualization-content">
+                                <div class="repo-status">
+                                    <div class="status-section">
+                                        <h4>Working Directory</h4>
+                                        <div class="file-list" id="working-directory-branching">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Staging Area</h4>
+                                        <div class="file-list" id="staging-area-branching">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Repository</h4>
+                                        <div class="commit-list" id="repository-branching">
+                                            <!-- Commits will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-progress">
+                        <h3>Progress</h3>
+                        <div class="progress-steps">
+                            <div class="progress-step" data-step="create-branch" data-challenge="branching">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Create branch</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="checkout" data-challenge="branching">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Switch to branch</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="modify" data-challenge="branching">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Modify file</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="commit" data-challenge="branching">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Commit changes</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="merge" data-challenge="branching">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Merge branch</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="delete" data-challenge="branching">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Delete branch</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="hint-btn-branching" class="hint-btn" data-challenge="branching">Get Hint</button>
+                    <button id="submit-challenge-branching" class="submit-challenge" data-challenge="branching">Complete Challenge</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Merge Conflicts Challenge Modal -->
+        <div id="challenge-modal-merge" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Merge Conflicts Challenge</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="challenge-description">
+                        <h3>Objective</h3>
+                        <p>Learn to identify and resolve merge conflicts effectively.</p>
+                        
+                        <h3>Instructions</h3>
+                        <ol>
+                            <li>Create a new branch and modify a file.</li>
+                            <li>Switch to the main branch and modify the same file differently.</li>
+                            <li>Attempt to merge the branch, causing a conflict.</li>
+                            <li>Use <code>git status</code> to identify conflicts.</li>
+                            <li>Manually resolve the conflict in the file.</li>
+                            <li>Stage and commit the resolved changes.</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="git-simulator">
+                        <div class="simulator-header">
+                            <h3>Git Terminal</h3>
+                        </div>
+                        <div class="terminal">
+                            <div class="terminal-output" id="terminal-output-merge">
+                                <div class="output-line">Welcome to Git Quest Terminal!</div>
+                                <div class="output-line">Type 'help' to see available commands.</div>
+                                <div class="output-line">A repository has been initialized with index.html for you.</div>
+                            </div>
+                            <div class="terminal-input-container">
+                                <span class="prompt">$</span>
+                                <input type="text" id="terminal-input-merge" placeholder="Enter Git command...">
+                            </div>
+                        </div>
+                        
+                        <div class="simulator-visualization">
+                            <div class="visualization-header">
+                                <h3>Repository Visualization</h3>
+                            </div>
+                            <div class="visualization-content">
+                                <div class="repo-status">
+                                    <div class="status-section">
+                                        <h4>Working Directory</h4>
+                                        <div class="file-list" id="working-directory-merge">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Staging Area</h4>
+                                        <div class="file-list" id="staging-area-merge">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Repository</h4>
+                                        <div class="commit-list" id="repository-merge">
+                                            <!-- Commits will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-progress">
+                        <h3>Progress</h3>
+                        <div class="progress-steps">
+                            <div class="progress-step" data-step="create-branch" data-challenge="merge">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Create branch</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="modify-branch" data-challenge="merge">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Modify in branch</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="modify-main" data-challenge="merge">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Modify in main</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="merge-conflict" data-challenge="merge">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Create conflict</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="resolve" data-challenge="merge">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Resolve conflict</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="commit" data-challenge="merge">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Commit resolution</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="hint-btn-merge" class="hint-btn" data-challenge="merge">Get Hint</button>
+                    <button id="submit-challenge-merge" class="submit-challenge" data-challenge="merge">Complete Challenge</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rebasing Workflow Challenge Modal -->
+        <div id="challenge-modal-rebase" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Rebasing Workflow Challenge</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="challenge-description">
+                        <h3>Objective</h3>
+                        <p>Master rebasing to maintain a clean project history.</p>
+                        
+                        <h3>Instructions</h3>
+                        <ol>
+                            <li>Create a new branch and make some commits.</li>
+                            <li>Switch back to main and make additional commits.</li>
+                            <li>Rebase your branch onto main using <code>git rebase</code>.</li>
+                            <li>Resolve any conflicts and complete the rebase.</li>
+                            <li>Ensure the history is linear using <code>git log --oneline</code>.</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="git-simulator">
+                        <div class="simulator-header">
+                            <h3>Git Terminal</h3>
+                        </div>
+                        <div class="terminal">
+                            <div class="terminal-output" id="terminal-output-rebase">
+                                <div class="output-line">Welcome to Git Quest Terminal!</div>
+                                <div class="output-line">Type 'help' to see available commands.</div>
+                                <div class="output-line">A repository has been initialized with index.html for you.</div>
+                            </div>
+                            <div class="terminal-input-container">
+                                <span class="prompt">$</span>
+                                <input type="text" id="terminal-input-rebase" placeholder="Enter Git command...">
+                            </div>
+                        </div>
+                        
+                        <div class="simulator-visualization">
+                            <div class="visualization-header">
+                                <h3>Repository Visualization</h3>
+                            </div>
+                            <div class="visualization-content">
+                                <div class="repo-status">
+                                    <div class="status-section">
+                                        <h4>Working Directory</h4>
+                                        <div class="file-list" id="working-directory-rebase">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Staging Area</h4>
+                                        <div class="file-list" id="staging-area-rebase">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Repository</h4>
+                                        <div class="commit-list" id="repository-rebase">
+                                            <!-- Commits will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-progress">
+                        <h3>Progress</h3>
+                        <div class="progress-steps">
+                            <div class="progress-step" data-step="create-branch" data-challenge="rebase">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Create branch</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="branch-commits" data-challenge="rebase">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Commit in branch</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="main-commits" data-challenge="rebase">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Commit in main</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="rebase" data-challenge="rebase">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Rebase branch</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="resolve" data-challenge="rebase">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Resolve conflicts</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="verify" data-challenge="rebase">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Verify history</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="hint-btn-rebase" class="hint-btn" data-challenge="rebase">Get Hint</button>
+                    <button id="submit-challenge-rebase" class="submit-challenge" data-challenge="rebase">Complete Challenge</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CI/CD Integration Challenge Modal -->
+        <div id="challenge-modal-cicd" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>CI/CD Integration Challenge</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="challenge-description">
+                        <h3>Objective</h3>
+                        <p>Set up a basic CI/CD pipeline with GitHub Actions.</p>
+                        
+                        <h3>Instructions</h3>
+                        <ol>
+                            <li>Create a new GitHub repository.</li>
+                            <li>Add a GitHub Actions workflow file under <code>.github/workflows/</code>.</li>
+                            <li>Define steps to run tests and build the project.</li>
+                            <li>Commit and push the workflow file.</li>
+                            <li>Trigger the workflow by pushing a code change.</li>
+                            <li>Monitor the workflow execution on GitHub.</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="git-simulator">
+                        <div class="simulator-header">
+                            <h3>Git Terminal</h3>
+                        </div>
+                        <div class="terminal">
+                            <div class="terminal-output" id="terminal-output-cicd">
+                                <div class="output-line">Welcome to Git Quest Terminal!</div>
+                                <div class="output-line">Type 'help' to see available commands.</div>
+                                <div class="output-line">A repository has been initialized for you.</div>
+                            </div>
+                            <div class="terminal-input-container">
+                                <span class="prompt">$</span>
+                                <input type="text" id="terminal-input-cicd" placeholder="Enter Git command...">
+                            </div>
+                        </div>
+                        
+                        <div class="simulator-visualization">
+                            <div class="visualization-header">
+                                <h3>Repository Visualization</h3>
+                            </div>
+                            <div class="visualization-content">
+                                <div class="repo-status">
+                                    <div class="status-section">
+                                        <h4>Working Directory</h4>
+                                        <div class="file-list" id="working-directory-cicd">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Staging Area</h4>
+                                        <div class="file-list" id="staging-area-cicd">
+                                            <!-- Files will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                    <div class="status-section">
+                                        <h4>Repository</h4>
+                                        <div class="commit-list" id="repository-cicd">
+                                            <!-- Commits will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-progress">
+                        <h3>Progress</h3>
+                        <div class="progress-steps">
+                            <div class="progress-step" data-step="create-repo" data-challenge="cicd">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Create repository</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="create-workflow" data-challenge="cicd">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Create workflow file</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="define-steps" data-challenge="cicd">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Define workflow steps</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="commit-push" data-challenge="cicd">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Commit and push</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="trigger" data-challenge="cicd">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Trigger workflow</p>
+                                </div>
+                            </div>
+                            <div class="progress-step" data-step="monitor" data-challenge="cicd">
+                                <div class="step-indicator">
+                                    <i class="fa-regular fa-circle"></i>
+                                </div>
+                                <div class="step-content">
+                                    <p>Monitor execution</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="hint-btn-cicd" class="hint-btn" data-challenge="cicd">Get Hint</button>
+                    <button id="submit-challenge-cicd" class="submit-challenge" data-challenge="cicd">Complete Challenge</button>
                 </div>
             </div>
         </div>
@@ -505,4 +1151,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
