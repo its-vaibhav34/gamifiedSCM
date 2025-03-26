@@ -8,4 +8,4 @@
 #steps to run project : it is simple just clone the repo if access or if you fork the repo then just run the index.html file and you will able to see the project for now .
 
 
-hii my team name is TechNovators 
+hii my team name is TechNovators . hi my name is aditya 
