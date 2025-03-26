@@ -6,3 +6,6 @@
 #git without using gitbash and according to their process they will be marked and score will #represent on leaderboard 
 
 #steps to run project : it is simple just clone the repo if access or if you fork the repo then just run the index.html file and you will able to see the project for now .
+
+
+hii my team name is TechNovators 
