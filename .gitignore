@@ -1,3 +1,2 @@
-*.log 
-nod_modules/
-.idea/
+ *.log
+  temp/
