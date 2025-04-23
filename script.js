@@ -1083,3 +1083,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+// Add to script.js
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Existing code...
+  
+  // Documentation page sidebar navigation
+  const docLinks = document.querySelectorAll(".doc-sidebar ul li a");
+  const docSections = document.querySelectorAll(".doc-section");
+  
+  docLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      
+      // Update active sidebar link
+      document.querySelector(".doc-sidebar ul li.active")?.classList.remove("active");
+      this.parentElement.classList.add("active");
+      
+      // Show corresponding section
+      const targetId = this.getAttribute("href").substring(1);
+      docSections.forEach((section) => {
+        section.classList.remove("active");
+      });
+      document.getElementById(targetId).classList.add("active");
+    });
+  });
+});
