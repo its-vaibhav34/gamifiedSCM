@@ -1187,6 +1187,60 @@ git add .          # Add all files</code></pre>
                 </div>
             </div>
         </section>
+        <section class="settings active-section">
+            <h2>Settings</h2>
+            
+            <div class="settings-container">
+                <div class="settings-sidebar">
+                    <ul>
+                        <li class="active"><a href="#account">Account</a></li>
+                        <li><a href="#appearance">Appearance</a></li>
+                        <li><a href="#notifications">Notifications</a></li>
+                        <li><a href="#privacy">Privacy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="settings-content">
+                    <div id="account" class="settings-section active">
+                        <h3>Account Settings</h3>
+                        
+                        <form class="settings-form">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" value="GitUser" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" value="user@example.com" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="avatar">Profile Picture</label>
+                                <div class="avatar-selector">
+                                    <img src="https://m.media-amazon.com/images/S/aplus-media/vc/eeae6f85-4736-4672-9a64-a17ceefe4d87._SL300__.png" alt="Current Avatar" class="current-avatar">
+                                    <button type="button" class="change-avatar-btn">Change Avatar</button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password">Change Password</label>
+                                <input type="password" id="password" placeholder="New Password" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm Password</label>
+                                <input type="password" id="confirm-password" placeholder="Confirm New Password" class="form-control">
+                            </div>
+                            
+                            <button type="submit" class="save-settings-btn">Save Changes</button>
+                        </form>
+                    </div>
+                    
+                    <!-- More settings sections would be added here -->
+                </div>
+            </div>
+        </section>
     </main>
     <div>
         <h1></h1>
