@@ -1144,3 +1144,35 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+// Add to script.js
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Existing code...
+  
+  // Forum new topic button
+  const newTopicBtn = document.querySelector(".new-topic-btn");
+  if (newTopicBtn) {
+    newTopicBtn.addEventListener("click", function() {
+      alert("New topic feature coming soon!");
+    });
+  }
+  
+  // Forum category cards
+  const categoryCards = document.querySelectorAll(".category-card");
+  categoryCards.forEach(card => {
+    card.addEventListener("click", function() {
+      const categoryName = this.querySelector("h3").textContent;
+      alert(`Viewing topics in ${categoryName} category coming soon!`);
+    });
+  });
+  
+  // Forum topic links
+  const topicLinks = document.querySelectorAll(".topic-content h4 a");
+  topicLinks.forEach(link => {
+    link.addEventListener("click", function(e) {
+      e.preventDefault();
+      const topicTitle = this.textContent;
+      alert(`Viewing topic: ${topicTitle} coming soon!`);
+    });
+  });
+});
