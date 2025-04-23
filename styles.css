@@ -1035,3 +1035,98 @@ footer {
   }
 }
 
+/* Add to styles.css */
+
+/* Documentation Styles */
+.documentation {
+  padding: 2rem;
+}
+
+.doc-container {
+  display: flex;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.doc-sidebar {
+  width: 250px;
+  background-color: var(--darker);
+  padding: 1.5rem;
+}
+
+.doc-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.doc-sidebar ul li {
+  margin-bottom: 1rem;
+}
+
+.doc-sidebar ul li a {
+  color: var(--light);
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.doc-sidebar ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.doc-sidebar ul li.active a {
+  background-color: var(--primary);
+  color: white;
+}
+
+.doc-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.doc-section {
+  display: none;
+}
+
+.doc-section.active {
+  display: block;
+}
+
+.command-card {
+  background-color: var(--light);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--primary);
+}
+
+.command-card h4 {
+  color: var(--primary);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.command-card pre {
+  background-color: var(--darker);
+  color: white;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+/* Responsive styles for documentation */
+@media (max-width: 768px) {
+  .doc-container {
+    flex-direction: column;
+  }
+  
+  .doc-sidebar {
+    width: 100%;
+  }
+}
