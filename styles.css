@@ -1458,3 +1458,339 @@ footer {
     margin-top: 1rem;
   }
 }
+
+
+/* Documentation Section Styling */
+.documentation {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.documentation h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #ffffff;
+  text-align: center;
+  position: relative;
+}
+
+.documentation h2:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #f05033, #6e5494);
+  border-radius: 2px;
+}
+
+/* Container Layout */
+.doc-container {
+  display: flex;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Sidebar Styling */
+.doc-sidebar {
+  width: 250px;
+  background-color: #000000;
+  padding: 20px 0;
+  border-right: 1px solid #eaeaea;
+  flex-shrink: 0;
+}
+
+.doc-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.doc-sidebar li {
+  margin: 0;
+  padding: 0;
+}
+
+.doc-sidebar a {
+  display: block;
+  padding: 12px 24px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.doc-sidebar a:hover {
+  background-color: #f0f0f0;
+  border-left-color: #ccc;
+}
+
+.doc-sidebar a.active {
+  background-color: #fff;
+  border-left-color: #f05033;
+  color: #f05033;
+  font-weight: 600;
+}
+
+/* Content Area Styling */
+.doc-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+}
+
+/* Section Styling */
+.doc-section {
+  display: block;
+}
+
+.doc-section.hidden {
+  display: none;
+}
+
+.doc-section h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+}
+
+.section-intro {
+  margin-bottom: 2rem;
+  color: #555;
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+
+.workflow-diagram {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.workflow-diagram img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Command Card Styling */
+.command-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #6e5494;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.command-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.command-card h4 {
+  font-size: 1.3rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.command-card p {
+  color: #555;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* Code Block Styling */
+.code-block {
+  background-color: #f6f8fa;
+  border-radius: 6px;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 16px;
+  overflow-x: auto;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #ffffff;
+}
+
+.code-block code {
+  display: block;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: transparent;
+  border: none;
+  color: #6e6e6e;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+/* Try It Button and Output */
+.try-it-container {
+  margin-top: 0.5rem;
+}
+
+.try-it-btn {
+  background-color: #f05033;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.try-it-btn:hover {
+  background-color: #d43c23;
+}
+
+.command-output {
+  background-color: #303030;
+  color: #f1f1f1;
+  padding: 16px;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.command-output.hidden {
+  display: none;
+}
+
+/* Cheat Sheet Styling */
+.cheatsheet-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.cheatsheet-section {
+  margin-bottom: 20px;
+}
+
+.cheatsheet-section h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: #2c3e50;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.cheatsheet-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cheatsheet-table tr {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cheatsheet-table tr:last-child {
+  border-bottom: none;
+}
+
+.cheatsheet-table td {
+  padding: 8px 10px;
+  line-height: 1.4;
+}
+
+.cheatsheet-table td:first-child {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  white-space: nowrap;
+  color: #d14;
+  font-size: 0.9rem;
+  width: 40%;
+}
+
+.printable-cheatsheet {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.print-btn {
+  background-color: #6e5494;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.print-btn:hover {
+  background-color: #5a4778;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .doc-container {
+      flex-direction: column;
+  }
+  
+  .doc-sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid #eaeaea;
+      padding: 10px 0;
+  }
+  
+  .doc-sidebar ul {
+      display: flex;
+      overflow-x: auto;
+      padding-bottom: 5px;
+  }
+  
+  .doc-sidebar li {
+      flex-shrink: 0;
+  }
+  
+  .doc-sidebar a {
+      padding: 8px 16px;
+      border-left: none;
+      border-bottom: 3px solid transparent;
+  }
+  
+  .doc-sidebar a.active {
+      border-left-color: transparent;
+      border-bottom-color: #f05033;
+  }
+  
+  .cheatsheet-container {
+      grid-template-columns: 1fr;
+  }
+}
