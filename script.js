@@ -1176,3 +1176,270 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Tab Navigation
+  const docLinks = document.querySelectorAll('.doc-link');
+  const docSections = document.querySelectorAll('.doc-section');
+  
+  // Set the first section as active by default
+  if (docSections.length > 0) {
+      docSections[0].classList.remove('hidden');
+      if (docLinks.length > 0) {
+          docLinks[0].classList.add('active');
+      }
+  }
+  
+  docLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Get the target section ID
+          const targetId = this.getAttribute('data-target');
+          
+          // Remove active class from all links and hide all sections
+          docLinks.forEach(l => l.classList.remove('active'));
+          docSections.forEach(s => s.classList.add('hidden'));
+          
+          // Add active class to clicked link and show target section
+          this.classList.add('active');
+          document.getElementById(targetId).classList.remove('hidden');
+      });
+  });
+  
+  // Copy Command Button Functionality
+  const copyButtons = document.querySelectorAll('.copy-btn');
+  
+  copyButtons.forEach(button => {
+      button.addEventListener('click', function() {
+          const command = this.getAttribute('data-command');
+          navigator.clipboard.writeText(command).then(() => {
+              // Change the icon temporarily to show it was copied
+              const icon = this.querySelector('i');
+              icon.classList.remove('fa-copy');
+              icon.classList.add('fa-check');
+              
+              setTimeout(() => {
+                  icon.classList.remove('fa-check');
+                  icon.classList.add('fa-copy');
+              }, 2000);
+          });
+      });
+  });
+  
+  // Try It Button Functionality
+  const tryButtons = document.querySelectorAll('.try-it-btn');
+  
+  tryButtons.forEach(button => {
+      button.addEventListener('click', function() {
+          const command = this.getAttribute('data-command');
+          const outputElement = this.nextElementSibling;
+          
+          // Show the output element
+          outputElement.classList.remove('hidden');
+          
+          // Simulate command execution
+          executeCommand(command, outputElement);
+      });
+  });
+  
+  // Print Cheatsheet Functionality
+  const printButton = document.getElementById('print-cheatsheet');
+  if (printButton) {
+      printButton.addEventListener('click', function() {
+          // Create a new window with just the cheatsheet content
+          const printWindow = window.open('', '_blank');
+          
+          // Get the cheatsheet content
+          const cheatsheetContent = document.querySelector('.cheatsheet-container').innerHTML;
+          
+          // Create HTML for the print window
+          printWindow.document.write(`
+              <!DOCTYPE html>
+              <html>
+              <head>
+                  <title>Git Cheat Sheet</title>
+                  <style>
+                      body {
+                          font-family: Arial, sans-serif;
+                          padding: 20px;
+                          max-width: 1000px;
+                          margin: 0 auto;
+                      }
+                      h1 {
+                          text-align: center;
+                          color: #2c3e50;
+                          margin-bottom: 30px;
+                      }
+                      .cheatsheet-container {
+                          display: grid;
+                          grid-template-columns: repeat(2, 1fr);
+                          gap: 20px;
+                      }
+                      .cheatsheet-section h2 {
+                          font-size: 1.5rem;
+                          color: #2c3e50;
+                          border-bottom: 2px solid #f0f0f0;
+                          padding-bottom: 5px;
+                          margin-bottom: 10px;
+                      }
+                      table {
+                          width: 100%;
+                          border-collapse: collapse;
+                      }
+                      tr {
+                          border-bottom: 1px solid #eee;
+                      }
+                      td {
+                          padding: 8px 5px;
+                          line-height: 1.4;
+                      }
+                      td:first-child {
+                          font-family: monospace;
+                          white-space: nowrap;
+                          color: #d14;
+                      }
+                      @media print {
+                          body {
+                              padding: 0;
+                          }
+                      }
+                  </style>
+              </head>
+              <body>
+                  <h1>Git Cheat Sheet</h1>
+                  <div class="cheatsheet-container">
+                      ${cheatsheetContent}
+                  </div>
+              </body>
+              </html>
+          `);
+          
+          // Print the window
+          setTimeout(() => {
+              printWindow.print();
+          }, 500);
+      });
+  }
+  
+  // Command Execution Simulation
+  function executeCommand(command, outputElement) {
+      // Simulate loading
+      outputElement.textContent = "Executing command...";
+      
+      // Simulate different outputs based on the command
+      setTimeout(() => {
+          let output = "";
+          
+          if (command.includes("init")) {
+              output = "Initialized empty Git repository in /path/to/repository/.git/";
+          } 
+          else if (command.includes("add")) {
+              output = "Changes staged for commit.";
+          }
+          else if (command.includes("commit")) {
+              output = `[main f7b97e2] ${command.split('"')[1] || "Commit message"}\n 1 file changed, 5 insertions(+), 2 deletions(-)`;
+          }
+          else if (command.includes("status")) {
+              output = "On branch main\nYour branch is up to date with 'origin/main'.\n\nChanges to be committed:\n  (use \"git restore --staged <file>...\" to unstage)\n\t modified:   index.html\n\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in working directory)\n\t modified:   styles.css";
+          }
+          else if (command.includes("log")) {
+              if (command.includes("--oneline")) {
+                  output = "f7b97e2 (HEAD -> main) Add navigation menu\n3a5c1d9 Update landing page design\nbd58a37 Initial commit";
+              } else {
+                  output = "commit f7b97e2e3a5c1d9bd58a37c6f98c6cc4c5f55f5 (HEAD -> main)\nAuthor: Developer <dev@example.com>\nDate:   Wed Apr 23 10:30:25 2025 -0400\n\n    Add navigation menu\n\ncommit 3a5c1d9bd58a37c6f98c6cc4c5f55f5db47e288\nAuthor: Developer <dev@example.com>\nDate:   Wed Apr 22 09:15:10 2025 -0400\n\n    Update landing page design\n\ncommit bd58a37c6f98c6cc4c5f55f5db47e2883a5c1d9\nAuthor: Developer <dev@example.com>\nDate:   Tue Apr 21 14:45:32 2025 -0400\n\n    Initial commit";
+              }
+          }
+          else if (command.includes("branch")) {
+              if (command.split(" ").length > 1 && !command.includes("-d") && !command.includes("-v")) {
+                  const branchName = command.split(" ")[1];
+                  output = `Created branch '${branchName}'`;
+              } else {
+                  output = "* main\n  feature-branch\n  bugfix-123";
+              }
+          }
+          else if (command.includes("checkout") || command.includes("switch")) {
+              const parts = command.split(" ");
+              let branchName;
+              
+              if (command.includes("-b") || command.includes("-c")) {
+                  branchName = parts[parts.length - 1];
+                  output = `Switched to a new branch '${branchName}'`;
+              } else if (parts.length > 1) {
+                  branchName = parts[parts.length - 1];
+                  output = `Switched to branch '${branchName}'`;
+              }
+          }
+          else if (command.includes("merge")) {
+              if (command.includes("--abort")) {
+                  output = "Merge aborted.";
+              } else if (command.includes("--continue")) {
+                  output = "Merge completed.";
+              } else {
+                  const branchName = command.split(" ")[1];
+                  output = `Updating f7b97e2..3a5c1d9\nFast-forward\n index.html | 7 +++++++\n styles.css | 3 +++\n 2 files changed, 10 insertions(+)\nMerge made by the 'recursive' strategy.`;
+              }
+          }
+          else if (command.includes("remote")) {
+              if (command.includes("-v")) {
+                  output = "origin  https://github.com/username/repo.git (fetch)\norigin  https://github.com/username/repo.git (push)";
+              } else {
+                  output = "origin";
+              }
+          }
+          else if (command.includes("clone")) {
+              output = "Cloning into 'repo'...\nremote: Enumerating objects: 75, done.\nremote: Counting objects: 100% (75/75), done.\nremote: Compressing objects: 100% (53/53), done.\nremote: Total 75 (delta 30), reused 59 (delta 20), pack-reused 0\nReceiving objects: 100% (75/75), 11.24 KiB | 3.74 MiB/s, done.\nResolving deltas: 100% (30/30), done.";
+          }
+          else if (command.includes("push")) {
+              output = "Enumerating objects: 5, done.\nCounting objects: 100% (5/5), done.\nDelta compression using up to 8 threads\nCompressing objects: 100% (3/3), done.\nWriting objects: 100% (3/3), 352 bytes | 352.00 KiB/s, done.\nTotal 3 (delta 2), reused 0 (delta 0), pack-reused 0\nremote: Resolving deltas: 100% (2/2), completed with 2 local objects.\nTo https://github.com/username/repo.git\n   3a5c1d9..f7b97e2  main -> main";
+          }
+          else if (command.includes("pull")) {
+              output = "Already up to date.";
+          }
+          else if (command.includes("fetch")) {
+              output = "From https://github.com/username/repo\n * [new branch]      feature-xyz -> origin/feature-xyz\n   bd58a37..3a5c1d9  main       -> origin/main";
+          }
+          else if (command.includes("rebase")) {
+              output = "Successfully rebased and updated refs/heads/feature-branch.";
+          }
+          else if (command.includes("cherry-pick")) {
+              output = "[main abc1234] Add feature X\n 1 file changed, 10 insertions(+)";
+          }
+          else if (command.includes("stash")) {
+              if (command === "git stash") {
+                  output = "Saved working directory and index state WIP on main: f7b97e2 Add navigation menu";
+              } else if (command.includes("list")) {
+                  output = "stash@{0}: WIP on main: f7b97e2 Add navigation menu\nstash@{1}: WIP on feature-branch: 3a5c1d9 Update landing page design";
+              } else if (command.includes("apply") || command.includes("pop")) {
+                  output = "On branch main\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in working directory)\n\t modified:   index.html\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")";
+              }
+          }
+          else if (command.includes("tag")) {
+              if (command === "git tag") {
+                  output = "v0.9.0\nv1.0.0\nv1.1.0";
+              } else if (command.includes("-a")) {
+                  output = "Tagged commit f7b97e2 as v1.0.0";
+              }
+          }
+          else if (command.includes("bisect")) {
+              if (command.includes("start")) {
+                  output = "Git bisect session started.";
+              } else if (command.includes("good")) {
+                  output = "Bisecting: 5 revisions left to test after this (roughly 3 steps)";
+              } else if (command.includes("bad")) {
+                  output = "Bisecting: 2 revisions left to test after this (roughly 1 step)";
+              } else if (command.includes("reset")) {
+                  output = "Bisect session ended.";
+              }
+          }
+          else if (command.includes("worktree")) {
+              output = "/path/to/repo    f7b97e2 [main]\n/path/to/repo-feat 3a5c1d9 [feature-branch]";
+          }
+          else {
+              output = "Command executed successfully.";
+          }
+          
+          outputElement.textContent = output;
+      }, 1000);
+  }
+});

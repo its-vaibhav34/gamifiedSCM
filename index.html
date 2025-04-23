@@ -1144,52 +1144,534 @@
             </div>
         </div>
         <section class="documentation active-section" id="documentation">
-            <h2>Git Documentation</h2>
+            <h2 style="color: black;">Git Documentation</h2>
             
             <div class="doc-container">
                 <div class="doc-sidebar">
                     <ul>
-                        <li class="active"><a href="#basics">Git Basics</a></li>
-                        <li><a href="#branching">Branching & Merging</a></li>
-                        <li><a href="#remote">Remote Repositories</a></li>
-                        <li><a href="#advanced">Advanced Topics</a></li>
-                        <li><a href="#cheatsheet">Cheat Sheet</a></li>
+                        <li><a href="#basics" class="doc-link" data-target="basics">Git Basics</a></li>
+                        <li><a href="#branching" class="doc-link" data-target="branching">Branching & Merging</a></li>
+                        <li><a href="#remote" class="doc-link" data-target="remote">Remote Repositories</a></li>
+                        <li><a href="#advanced" class="doc-link" data-target="advanced">Advanced Topics</a></li>
+                        <li><a href="#cheatsheet" class="doc-link" data-target="cheatsheet">Cheat Sheet</a></li>
                     </ul>
                 </div>
                 
                 <div class="doc-content">
-                    <div id="basics" class="doc-section active">
+                    <div id="basics" class="doc-section">
                         <h3>Git Basics</h3>
+                        
                         <div class="command-card">
                             <h4>git init</h4>
                             <p>Initializes a new Git repository in the current directory.</p>
-                            <pre><code>git init</code></pre>
+                            <div class="code-block">
+                                <pre><code>git init</code></pre>
+                                <button class="copy-btn" data-command="git init"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git init">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
                         </div>
                         
                         <div class="command-card">
                             <h4>git add</h4>
                             <p>Adds files to the staging area.</p>
-                            <pre><code>git add filename    # Add a specific file
-git add .          # Add all files</code></pre>
+                            <div class="code-block">
+                                <pre><code>git add filename    # Add a specific file
+    git add .          # Add all files</code></pre>
+                                <button class="copy-btn" data-command="git add ."><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git add .">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
                         </div>
                         
                         <div class="command-card">
                             <h4>git commit</h4>
                             <p>Records changes to the repository.</p>
-                            <pre><code>git commit -m "Commit message"</code></pre>
+                            <div class="code-block">
+                                <pre><code>git commit -m "Commit message"</code></pre>
+                                <button class="copy-btn" data-command="git commit -m &quot;Initial commit&quot;"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git commit -m &quot;Initial commit&quot;">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
                         </div>
                         
                         <div class="command-card">
                             <h4>git status</h4>
                             <p>Shows the status of files in the working directory and staging area.</p>
-                            <pre><code>git status</code></pre>
+                            <div class="code-block">
+                                <pre><code>git status</code></pre>
+                                <button class="copy-btn" data-command="git status"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git status">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git log</h4>
+                            <p>Shows commit history.</p>
+                            <div class="code-block">
+                                <pre><code>git log
+    git log --oneline    # Compact view
+    git log --graph      # Show branch structure</code></pre>
+                                <button class="copy-btn" data-command="git log --oneline"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git log --oneline">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- More sections would be added here -->
+                    <div id="branching" class="doc-section hidden">
+                        <h3>Branching & Merging</h3>
+                        
+                        <div class="section-intro">
+                            <p>Branches allow you to develop features, fix bugs, or experiment with new ideas in isolation without affecting the main codebase. Merging combines changes from different branches.</p>
+                            <div class="workflow-diagram">
+                                <img src="/placeholder.svg?height=150&width=500" alt="Branching Workflow Diagram">
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git branch</h4>
+                            <p>List, create, or delete branches.</p>
+                            <div class="code-block">
+                                <pre><code>git branch              # List branches
+    git branch feature-name  # Create new branch
+    git branch -d branch-name # Delete branch</code></pre>
+                                <button class="copy-btn" data-command="git branch"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git branch">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git checkout</h4>
+                            <p>Switch branches or restore working tree files.</p>
+                            <div class="code-block">
+                                <pre><code>git checkout branch-name           # Switch to branch
+    git checkout -b new-branch        # Create and checkout new branch
+    git checkout -                    # Switch to previous branch</code></pre>
+                                <button class="copy-btn" data-command="git checkout -b feature-branch"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git checkout -b feature-branch">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git switch</h4>
+                            <p>Switch branches (modern alternative to checkout).</p>
+                            <div class="code-block">
+                                <pre><code>git switch branch-name           # Switch to branch
+    git switch -c new-branch        # Create and switch to new branch</code></pre>
+                                <button class="copy-btn" data-command="git switch -c new-feature"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git switch -c new-feature">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git merge</h4>
+                            <p>Join two or more development histories together.</p>
+                            <div class="code-block">
+                                <pre><code>git merge branch-name        # Merge specified branch into current branch
+    git merge --no-ff branch-name # Create merge commit even if fast-forward is possible</code></pre>
+                                <button class="copy-btn" data-command="git merge feature-branch"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git merge feature-branch">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>Resolving Merge Conflicts</h4>
+                            <p>When Git can't automatically merge branches, you need to resolve conflicts manually.</p>
+                            <div class="code-block">
+                                <pre><code># After a conflict:
+    # 1. Edit the conflicted files
+    # 2. Mark as resolved
+    git add conflicted-file
+    
+    # 3. Complete the merge
+    git merge --continue
+    
+    # Or abort the merge
+    git merge --abort</code></pre>
+                                <button class="copy-btn" data-command="git merge --continue"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git merge --abort">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="remote" class="doc-section hidden">
+                        <h3>Remote Repositories</h3>
+                        
+                        <div class="section-intro">
+                            <p>Remote repositories allow you to collaborate with others, backup your work, and synchronize changes across multiple machines. GitHub, GitLab, and Bitbucket are popular Git hosting services.</p>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git remote</h4>
+                            <p>Manage remote repositories.</p>
+                            <div class="code-block">
+                                <pre><code>git remote                     # List remotes
+    git remote -v                  # List remotes with URLs
+    git remote add name url        # Add new remote
+    git remote remove name         # Remove remote</code></pre>
+                                <button class="copy-btn" data-command="git remote -v"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git remote -v">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git clone</h4>
+                            <p>Create a copy of a remote repository.</p>
+                            <div class="code-block">
+                                <pre><code>git clone repository-url                   # Clone repository
+    git clone repository-url folder-name      # Clone into specific directory
+    git clone --branch branch-name repo-url   # Clone specific branch</code></pre>
+                                <button class="copy-btn" data-command="git clone https://github.com/username/repo.git"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git clone https://github.com/username/repo.git">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git push</h4>
+                            <p>Upload local repository content to a remote repository.</p>
+                            <div class="code-block">
+                                <pre><code>git push origin branch-name          # Push branch to remote
+    git push -u origin branch-name       # Push and set upstream
+    git push --force origin branch-name  # Force push (use carefully!)</code></pre>
+                                <button class="copy-btn" data-command="git push -u origin main"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git push -u origin main">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git pull</h4>
+                            <p>Fetch from and integrate with another repository or branch.</p>
+                            <div class="code-block">
+                                <pre><code>git pull                        # Pull changes from upstream
+    git pull origin branch-name     # Pull from specific remote branch
+    git pull --rebase               # Pull and rebase local changes</code></pre>
+                                <button class="copy-btn" data-command="git pull"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git pull">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git fetch</h4>
+                            <p>Download objects and refs from another repository without merging.</p>
+                            <div class="code-block">
+                                <pre><code>git fetch                       # Fetch all remotes
+    git fetch origin               # Fetch from origin
+    git fetch --all                # Fetch all branches from all remotes</code></pre>
+                                <button class="copy-btn" data-command="git fetch --all"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git fetch --all">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="advanced" class="doc-section hidden">
+                        <h3>Advanced Topics</h3>
+                        
+                        <div class="command-card">
+                            <h4>git rebase</h4>
+                            <p>Reapply commits on top of another base tip.</p>
+                            <div class="code-block">
+                                <pre><code>git rebase branch-name            # Rebase current branch onto branch-name
+    git rebase -i HEAD~3              # Interactive rebase for last 3 commits
+    git rebase --continue             # Continue after resolving conflicts</code></pre>
+                                <button class="copy-btn" data-command="git rebase main"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git rebase main">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git cherry-pick</h4>
+                            <p>Apply the changes introduced by existing commits.</p>
+                            <div class="code-block">
+                                <pre><code>git cherry-pick commit-hash        # Apply specific commit to current branch
+    git cherry-pick commit1..commit2  # Apply a range of commits</code></pre>
+                                <button class="copy-btn" data-command="git cherry-pick abc1234"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git cherry-pick abc1234">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git stash</h4>
+                            <p>Stash changes in a dirty working directory.</p>
+                            <div class="code-block">
+                                <pre><code>git stash                   # Stash changes
+    git stash list               # List stashes
+    git stash apply              # Apply most recent stash
+    git stash apply stash@{n}    # Apply specific stash
+    git stash pop                # Apply and remove stash
+    git stash drop               # Delete most recent stash</code></pre>
+                                <button class="copy-btn" data-command="git stash"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git stash">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git tag</h4>
+                            <p>Create, list, delete, or verify tags.</p>
+                            <div class="code-block">
+                                <pre><code>git tag                          # List tags
+    git tag v1.0.0                    # Create lightweight tag
+    git tag -a v1.0.0 -m "Version 1.0.0"   # Create annotated tag
+    git push origin --tags            # Push tags to remote</code></pre>
+                                <button class="copy-btn" data-command="git tag -a v1.0.0 -m &quot;Version 1.0.0&quot;"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git tag -a v1.0.0 -m &quot;Version 1.0.0&quot;">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git bisect</h4>
+                            <p>Use binary search to find the commit that introduced a bug.</p>
+                            <div class="code-block">
+                                <pre><code>git bisect start                # Start bisect session
+    git bisect bad                  # Mark current commit as bad
+    git bisect good commit-hash     # Mark known good commit
+    # Git will checkout commits for you to test
+    git bisect good/bad             # Mark current commit as good or bad
+    git bisect reset                # End bisect session</code></pre>
+                                <button class="copy-btn" data-command="git bisect start"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git bisect start">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="command-card">
+                            <h4>git worktree</h4>
+                            <p>Manage multiple working trees attached to the same repository.</p>
+                            <div class="code-block">
+                                <pre><code>git worktree add ../path branch-name  # Create new worktree
+    git worktree list                     # List worktrees
+    git worktree remove ../path           # Remove worktree</code></pre>
+                                <button class="copy-btn" data-command="git worktree list"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="try-it-container">
+                                <button class="try-it-btn" data-command="git worktree list">Try It</button>
+                                <div class="command-output hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="cheatsheet" class="doc-section hidden">
+                        <h3>Git Cheat Sheet</h3>
+                        
+                        <div class="cheatsheet-container">
+                            <div class="cheatsheet-section">
+                                <h4>Creating Repositories</h4>
+                                <table class="cheatsheet-table">
+                                    <tr>
+                                        <td><code>git init</code></td>
+                                        <td>Initialize a new repository</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git clone url</code></td>
+                                        <td>Clone existing repository</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div class="cheatsheet-section">
+                                <h4>Basic Operations</h4>
+                                <table class="cheatsheet-table">
+                                    <tr>
+                                        <td><code>git add file</code></td>
+                                        <td>Add file to staging area</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git add .</code></td>
+                                        <td>Add all changes to staging area</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git commit -m "message"</code></td>
+                                        <td>Commit staged changes</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git status</code></td>
+                                        <td>Show repository status</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git log</code></td>
+                                        <td>Show commit history</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git diff</code></td>
+                                        <td>Show unstaged changes</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div class="cheatsheet-section">
+                                <h4>Branching & Merging</h4>
+                                <table class="cheatsheet-table">
+                                    <tr>
+                                        <td><code>git branch</code></td>
+                                        <td>List branches</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git branch name</code></td>
+                                        <td>Create branch</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git checkout branch</code></td>
+                                        <td>Switch to branch</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git checkout -b name</code></td>
+                                        <td>Create and switch to branch</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git merge branch</code></td>
+                                        <td>Merge branch into current branch</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git branch -d branch</code></td>
+                                        <td>Delete branch</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div class="cheatsheet-section">
+                                <h4>Remote Operations</h4>
+                                <table class="cheatsheet-table">
+                                    <tr>
+                                        <td><code>git remote -v</code></td>
+                                        <td>List remotes</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git remote add name url</code></td>
+                                        <td>Add remote</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git fetch remote</code></td>
+                                        <td>Download from remote</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git pull remote branch</code></td>
+                                        <td>Fetch and merge from remote</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git push remote branch</code></td>
+                                        <td>Upload to remote</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div class="cheatsheet-section">
+                                <h4>Undoing Changes</h4>
+                                <table class="cheatsheet-table">
+                                    <tr>
+                                        <td><code>git restore file</code></td>
+                                        <td>Discard changes in working directory</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git restore --staged file</code></td>
+                                        <td>Unstage file</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git reset commit</code></td>
+                                        <td>Undo commits, keep changes</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git reset --hard commit</code></td>
+                                        <td>Undo commits, discard changes</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git revert commit</code></td>
+                                        <td>Create new commit that undoes changes</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div class="cheatsheet-section">
+                                <h4>Advanced Operations</h4>
+                                <table class="cheatsheet-table">
+                                    <tr>
+                                        <td><code>git stash</code></td>
+                                        <td>Save changes temporarily</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git stash pop</code></td>
+                                        <td>Apply and remove stashed changes</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git rebase branch</code></td>
+                                        <td>Reapply commits on top of branch</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git cherry-pick commit</code></td>
+                                        <td>Apply commit to current branch</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>git tag name</code></td>
+                                        <td>Create tag at current commit</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="printable-cheatsheet">
+                            <button id="print-cheatsheet" class="print-btn">
+                                <i class="fa-solid fa-print"></i> Print Cheat Sheet
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
+    
         <section class="settings active-section" id="settings">
             <h2>Settings</h2>
             
