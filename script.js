@@ -1109,3 +1109,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+// Add to script.js
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Existing code...
+  
+  // Settings page sidebar navigation
+  const settingsLinks = document.querySelectorAll(".settings-sidebar ul li a");
+  const settingsSections = document.querySelectorAll(".settings-section");
+  
+  settingsLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      
+      // Update active sidebar link
+      document.querySelector(".settings-sidebar ul li.active")?.classList.remove("active");
+      this.parentElement.classList.add("active");
+      
+      // Show corresponding section
+      const targetId = this.getAttribute("href").substring(1);
+      settingsSections.forEach((section) => {
+        section.classList.remove("active");
+      });
+      document.getElementById(targetId).classList.add("active");
+    });
+  });
+  
+  // Settings form submission
+  const settingsForm = document.querySelector(".settings-form");
+  if (settingsForm) {
+    settingsForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Settings saved successfully!");
+    });
+  }
+});
