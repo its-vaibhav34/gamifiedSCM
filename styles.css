@@ -1897,3 +1897,15 @@ body.dark-mode .terminal {
   background-color: #111;
   color: #0ff;
 }
+body.dark-mode .step-content {
+ 
+  color: rgb(0, 0, 0);
+}
+body.dark-mode .challenge-progress {
+  
+  color: black;
+}
+body.dark-mode .category-info {
+
+  color: rgb(0, 0, 0);
+}
