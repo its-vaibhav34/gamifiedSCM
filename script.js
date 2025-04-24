@@ -1459,3 +1459,206 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("theme", theme);
   });
 });
+
+// user-data.js - Manages user data across the application
+
+// User data object to store all user information
+const userData = {
+  username: "GitUser",
+  email: "user@example.com",
+  avatar: "https://m.media-amazon.com/images/S/aplus-media/vc/eeae6f85-4736-4672-9a64-a17ceefe4d87._SL300__.png",
+  level: 2,
+  xp: 120,
+  challenges: 3,
+  badges: 1,
+  // Add more user data as needed
+};
+
+// Available avatars for selection
+const availableAvatars = [
+  "https://m.media-amazon.com/images/S/aplus-media/vc/eeae6f85-4736-4672-9a64-a17ceefe4d87._SL300__.png",
+  "https://yt3.googleusercontent.com/yrfyzQYlBIj_a5A35QNnx1r-sxCo7od_YgmZmKjVDcoKi04s1fzusbExbd1cUw-Ymrx3n7F5kA=s900-c-k-c0x00ffffff-no-rj",
+  "https://yt3.googleusercontent.com/GyLEdLKX4ZTpYsjk68s4-Lti6P94-m9QZlqAQwOY0sfQPw-Vja8fLZ-O440I6ee2O2f-k3VJvg=s900-c-k-c0x00ffffff-no-rj",
+  "https://static1.srcdn.com/wordpress/wp-content/uploads/2022/01/Master-Tigress-from-Kung-Fu-Panda.jpg",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQijTncVRzTHCFNa6LTl6E9iJ_nyYINQE-VBQ&s",
+  "https://lumiere-a.akamaihd.net/v1/images/open-uri20150422-20810-6pb5yg_c12dffb8.jpeg",
+  "https://i.pinimg.com/474x/0a/cc/30/0acc30e51f64a8f125ec0ca350c0e1c6.jpg",
+  "https://i.pinimg.com/736x/18/67/ca/1867ca6916da84ec47e3e5ba496643d0.jpg"
+];
+
+// Function to update user data
+function updateUserData(newData) {
+  // Update the userData object with new values
+  Object.assign(userData, newData);
+  
+  // Update UI elements across the application
+  updateUIElements();
+  
+  // Save to localStorage for persistence
+  saveUserData();
+  
+  return userData;
+}
+
+// Function to update all UI elements that display user data
+function updateUIElements() {
+  // Update header user info
+  updateHeaderUserInfo();
+  
+  // Update profile page
+  updateProfilePage();
+  
+  // Update settings page
+  updateSettingsPage();
+  
+  // Update leaderboard
+  updateLeaderboard();
+}
+
+// Update header user info (avatar, XP, level)
+function updateHeaderUserInfo() {
+  // Update XP value
+  const xpElements = document.querySelectorAll('.xp-value');
+  xpElements.forEach(el => {
+      el.textContent = userData.xp;
+  });
+  
+  // Update level value
+  const levelElements = document.querySelectorAll('.level-value');
+  levelElements.forEach(el => {
+      el.textContent = userData.level;
+  });
+  
+  // Update avatar
+  const headerAvatarImg = document.querySelector('.user-info .user-avatar img');
+  if (headerAvatarImg) {
+      headerAvatarImg.src = userData.avatar;
+  }
+}
+
+// Update profile page with user data
+function updateProfilePage() {
+  // Update profile avatar
+  const profileAvatar = document.querySelector('.profile-avatar img');
+  if (profileAvatar) {
+      profileAvatar.src = userData.avatar;
+  }
+  
+  // Update stats
+  const statValues = document.querySelectorAll('.profile-stats .stat-value');
+  if (statValues.length >= 4) {
+      statValues[0].textContent = userData.level;
+      statValues[1].textContent = userData.xp;
+      statValues[2].textContent = userData.challenges;
+      statValues[3].textContent = userData.badges;
+  }
+  
+  // Update progress bar
+  const progressFill = document.querySelector('.progress-fill');
+  if (progressFill) {
+      // Calculate progress percentage (assuming 200 XP needed for next level)
+      const progressPercentage = (userData.xp % 200) / 2;
+      progressFill.style.width = `${progressPercentage}%`;
+  }
+  
+  // Update progress text
+  const progressHeader = document.querySelector('.progress-header');
+  if (progressHeader) {
+      const progressSpans = progressHeader.querySelectorAll('span');
+      if (progressSpans.length >= 2) {
+          progressSpans[0].textContent = `Level ${userData.level + 1}`;
+          progressSpans[1].textContent = `${userData.xp % 200}/200 XP`;
+      }
+  }
+}
+
+// Update settings page with user data
+function updateSettingsPage() {
+  // Update username input
+  const usernameInput = document.getElementById('username');
+  if (usernameInput) {
+      usernameInput.value = userData.username;
+  }
+  
+  // Update email input
+  const emailInput = document.getElementById('email');
+  if (emailInput) {
+      emailInput.value = userData.email;
+  }
+  
+  // Update avatar preview
+  const avatarPreview = document.querySelector('.avatar-selector .current-avatar');
+  if (avatarPreview) {
+      avatarPreview.src = userData.avatar;
+  }
+}
+
+// Update leaderboard with user data
+function updateLeaderboard() {
+  // Find the current user row in the leaderboard
+  const currentUserRow = document.querySelector('.leaderboard-table tr.current-user');
+  if (currentUserRow) {
+      // Update XP cell
+      const xpCell = currentUserRow.querySelector('td:nth-child(4)');
+      if (xpCell) {
+          xpCell.textContent = `${userData.xp} XP`;
+      }
+      
+      // Update level cell
+      const levelCell = currentUserRow.querySelector('td:nth-child(3)');
+      if (levelCell) {
+          levelCell.textContent = userData.level;
+      }
+  }
+}
+
+// Save user data to localStorage
+function saveUserData() {
+  localStorage.setItem('gitQuestUserData', JSON.stringify(userData));
+}
+
+// Load user data from localStorage
+function loadUserData() {
+  const savedData = localStorage.getItem('gitQuestUserData');
+  if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      Object.assign(userData, parsedData);
+  }
+}
+
+// Add XP to the user
+function addXP(amount) {
+  const newXP = userData.xp + amount;
+  
+  // Check if user leveled up (assuming 200 XP per level)
+  const currentLevel = Math.floor(userData.xp / 200);
+  const newLevel = Math.floor(newXP / 200);
+  
+  const leveledUp = newLevel > currentLevel;
+  
+  // Update user data
+  updateUserData({
+      xp: newXP,
+      level: newLevel,
+  });
+  
+  // Return whether the user leveled up
+  return leveledUp;
+}
+
+// Initialize user data when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  // Load saved user data
+  loadUserData();
+  
+  // Update UI with loaded data
+  updateUIElements();
+});
+
+// Export functions for use in other scripts
+window.UserData = {
+  get: () => ({ ...userData }), // Return a copy of userData
+  update: updateUserData,
+  addXP: addXP,
+  avatars: availableAvatars
+};

@@ -1679,60 +1679,79 @@
             </div>
         </section>
     
-        <section class="settings active-section" id="settings">
-            <h2>Settings</h2>
-            
-            <div class="settings-container">
-                <div class="settings-sidebar">
-                    <ul>
-                        <li class="active"><a href="#account">Account</a></li>
-                        <!-- <li><a href="#appearance">Appearance</a></li> -->
-                        <li><a href="#notifications">Notifications</a></li>
-                        <li><a href="#privacy">Privacy</a></li>
-                    </ul>
-                </div>
+      <!-- Updated settings section without password fields and privacy tab -->
+<section class="settings active-section" id="settings">
+    <h2>Settings</h2>
+    
+    <div class="settings-container">
+        <div class="settings-sidebar">
+            <ul>
+                <li class="active"><a href="#account">Account</a></li>
+                <li><a href="#notifications">Notifications</a></li>
+            </ul>
+        </div>
+        
+        <div class="settings-content">
+            <div id="account" class="settings-section active">
+                <h3>Account Settings</h3>
                 
-                <div class="settings-content">
-                    <div id="account" class="settings-section active">
-                        <h3>Account Settings</h3>
-                        
-                        <form class="settings-form">
-                            <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" id="username" value="GitUser" class="form-control">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" value="user@example.com" class="form-control">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="avatar">Profile Picture</label>
-                                <div class="avatar-selector">
-                                    <img src="https://m.media-amazon.com/images/S/aplus-media/vc/eeae6f85-4736-4672-9a64-a17ceefe4d87._SL300__.png" alt="Current Avatar" class="current-avatar">
-                                    <button type="button" class="change-avatar-btn">Change Avatar</button>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="password">Change Password</label>
-                                <input type="password" id="password" placeholder="New Password" class="form-control">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="confirm-password">Confirm Password</label>
-                                <input type="password" id="confirm-password" placeholder="Confirm New Password" class="form-control">
-                            </div>
-                            
-                            <button type="submit" class="save-settings-btn">Save Changes</button>
-                        </form>
+                <form class="settings-form" id="account-settings-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" class="form-control">
                     </div>
                     
-                    <!-- More settings sections would be added here -->
-                </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="avatar">Profile Picture</label>
+                        <div class="avatar-selector">
+                            <img src="/placeholder.svg" alt="Current Avatar" class="current-avatar">
+                            <button type="button" class="change-avatar-btn" id="change-avatar-btn">Change Avatar</button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="save-settings-btn">Save Changes</button>
+                </form>
             </div>
-        </section>
+            
+            <div id="notifications" class="settings-section">
+                <h3>Notification Settings</h3>
+                
+                <form class="settings-form" id="notification-settings-form">
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="email-notifications" checked>
+                            Email Notifications
+                        </label>
+                        <p class="form-help">Receive notifications about challenges and badges via email</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="challenge-reminders" checked>
+                            Challenge Reminders
+                        </label>
+                        <p class="form-help">Get reminders about incomplete challenges</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="leaderboard-updates" checked>
+                            Leaderboard Updates
+                        </label>
+                        <p class="form-help">Receive notifications about leaderboard changes</p>
+                    </div>
+                    
+                    <button type="submit" class="save-settings-btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
         <section class="forum active-section" id="forum">
             <div class="forum-header">
                 <h2>Community Forum</h2>
