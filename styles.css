@@ -1794,3 +1794,106 @@ footer {
       grid-template-columns: 1fr;
   }
 }
+
+/* Toggle Switch Styles */
+.dark-mode-toggle {
+  margin-left: 1rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 25px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 19px;
+  width: 19px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #555;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* Dark mode class for header only */
+header.nav-dark {
+  background-color: #0f172a; /* darker */
+  color: #f1f5f9; /* light text */
+}
+
+header.nav-dark .logo i {
+  color: #38bdf8;
+}
+
+header.nav-dark nav ul li.active::after {
+  background-color: #38bdf8;
+}
+
+body.dark-mode {
+  background-color: #0f172a;
+  color: #f1f5f9;
+}
+
+body.dark-mode header {
+  background-color: #1e293b;
+}
+
+body.dark-mode .feature-card,
+body.dark-mode .challenge-card,
+body.dark-mode .learning-path,
+body.dark-mode .profile-section,
+body.dark-mode .settings-container,
+body.dark-mode .doc-container,
+body.dark-mode .modal-content {
+  background-color: #1e293b;
+  color: #f1f5f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .start-challenge-btn,
+body.dark-mode .cta-button,
+body.dark-mode .save-settings-btn {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+body.dark-mode .feature-card i,
+body.dark-mode .challenge-card i,
+body.dark-mode .activity-icon i {
+  color: #38bdf8;
+}
+
+body.dark-mode .terminal {
+  background-color: #111;
+  color: #0ff;
+}
