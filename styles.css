@@ -1929,3 +1929,43 @@ body.dark-mode .category-info {
    color: #cbd5e1;
    opacity: 0.8;
  }
+
+ /* Leaderboard in dark mode */
+ body.dark-mode .leaderboard-container {
+  /* background-color: #1e293b; */
+  color: #f1f5f9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  font-family: "Inter", sans-serif;
+}
+
+body.dark-mode .leaderboard-table th,
+body.dark-mode .modal-footer {
+  background-color: #0f172a;
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+body.dark-mode .leaderboard-table tr,
+body.dark-mode .leaderboard-table td {
+  background-color: #1e293b; /* Keep the dark background for all rows */
+  color: #f1f5f9;
+  font-size: 0.95rem;
+}
+
+/* Remove any special background color for the top 3 positions */
+body.dark-mode .leaderboard-table tr:nth-child(1),
+body.dark-mode .leaderboard-table tr:nth-child(2),
+body.dark-mode .leaderboard-table tr:nth-child(3) {
+  background-color: #1e293b; /* Remove special background, keeping it the same as others */
+}
+
+/* Add hover effect for all rows */
+body.dark-mode .leaderboard-table tr:hover {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+body.dark-mode .user-name,
+body.dark-mode .user-xp {
+  color: #38bdf8;
+}
+
