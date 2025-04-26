@@ -1909,3 +1909,23 @@ body.dark-mode .category-info {
 
   color: rgb(0, 0, 0);
 }
+
+ /* Profile in dark mode */
+ body.dark-mode .profile-header,
+ body.dark-mode .profile-section,
+ body.dark-mode .profile-content {
+   background-color: #1e293b;
+   color: #f1f5f9;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+   font-family: "Inter", sans-serif;
+ }
+ 
+ body.dark-mode .profile-info h2,
+ body.dark-mode .profile-stats .stat-value {
+   color: #38bdf8;
+ }
+ 
+ body.dark-mode .stat-label {
+   color: #cbd5e1;
+   opacity: 0.8;
+ }
