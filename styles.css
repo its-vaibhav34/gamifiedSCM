@@ -1969,3 +1969,54 @@ body.dark-mode .user-xp {
   color: #38bdf8;
 }
 
+
+/* DOCS PAGE DARK MODE FIX */
+body.dark-mode .doc-container {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+body.dark-mode .doc-content {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  font-family: "Inter", sans-serif;
+  line-height: 1.7;
+}
+
+body.dark-mode .doc-content h2,
+body.dark-mode .doc-content h3,
+body.dark-mode .doc-content h4 {
+  color: #60a5fa;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+body.dark-mode .doc-content p,
+body.dark-mode .doc-content li {
+  color: #cbd5e1;
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+body.dark-mode .command-card {
+  background-color: #0f172a;
+  color: #f1f5f9;
+  border-left: 4px solid #3b82f6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+body.dark-mode .command-card h4 {
+  color: #38bdf8;
+  margin-bottom: 0.8rem;
+}
+
+body.dark-mode .command-card pre {
+  background-color: #1e1e2e;
+  color: #e2e8f0;
+  font-family: "Fira Code", monospace;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+}
