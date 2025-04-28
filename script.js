@@ -1662,3 +1662,34 @@ window.UserData = {
   addXP: addXP,
   avatars: availableAvatars
 };
+document.addEventListener("DOMContentLoaded", () => {
+  const avatarInput = document.getElementById("avatar-input");
+  const currentAvatar = document.getElementById("current-avatar");
+  const profileAvatar = document.getElementById("profile-avatar");
+  const usernameInput = document.getElementById("username");
+  const profileUsername = document.getElementById("profile-username");
+  const settingsForm = document.getElementById("account-settings-form");
+
+  // Handle Avatar Change
+  avatarInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+              const newAvatarUrl = e.target.result;
+              currentAvatar.src = newAvatarUrl;
+              profileAvatar.src = newAvatarUrl;
+          };
+          reader.readAsDataURL(file);
+      }
+  });
+
+  // Handle Save Changes
+  settingsForm.addEventListener("submit", (event) => {
+      event.preventDefault(); // Prevent form submission
+      const newUsername = usernameInput.value.trim();
+      if (newUsername) {
+          profileUsername.textContent = newUsername;
+      }
+  });
+});
