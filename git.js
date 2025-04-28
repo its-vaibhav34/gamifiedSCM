@@ -212,4 +212,56 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 3000)
     }
   })
+  // Filter functionality for GitHub friends
+document.addEventListener('DOMContentLoaded', () => {
+  const filterButtons = document.querySelectorAll('.friends-filter .filter-btn');
   
+  filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+          // Update active button
+          document.querySelector('.friends-filter .filter-btn.active').classList.remove('active');
+          button.classList.add('active');
+          
+          const filterType = button.getAttribute('data-filter');
+          const friendCards = document.querySelectorAll('.friend-card');
+          
+          // This is just a demo - in a real implementation, you would sort the actual friend data
+          if (filterType === 'all') {
+              // Show all friends
+              friendCards.forEach(card => {
+                  card.style.display = 'flex';
+              });
+          } else if (filterType === 'recent') {
+              // In a real implementation, you would sort by date added
+              // For demo, we'll just randomize
+              const randomOrder = [...friendCards].sort(() => Math.random() - 0.5);
+              friendCards.forEach(card => {
+                  card.style.display = 'none';
+              });
+              randomOrder.forEach(card => {
+                  card.style.display = 'flex';
+              });
+          } else if (filterType === 'most-repos') {
+              // In a real implementation, you would sort by repository count
+              // For demo, we'll just show some and hide others
+              friendCards.forEach((card, index) => {
+                  if (index % 2 === 0) {
+                      card.style.display = 'flex';
+                  } else {
+                      card.style.display = 'none';
+                  }
+              });
+          } else if (filterType === 'most-followers') {
+              // In a real implementation, you would sort by follower count
+              // For demo, we'll just show some and hide others
+              friendCards.forEach((card, index) => {
+                  if (index % 2 === 1) {
+                      card.style.display = 'flex';
+                  } else {
+                      card.style.display = 'none';
+                  }
+              });
+          }
+      });
+  });
+});
