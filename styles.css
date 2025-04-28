@@ -2035,3 +2035,6 @@ body.dark-mode .documentation h2 {
 .active-section {
   display: block;
 }
+.avatar-selector input[type="file"] {
+  display: none; /* Hide the file input */
+}
