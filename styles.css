@@ -2038,3 +2038,23 @@ body.dark-mode .documentation h2 {
 .avatar-selector input[type="file"] {
   display: none; /* Hide the file input */
 }
+#navbar-links {
+  display: flex;
+  gap: 2rem;
+}
+
+#navbar-links  {
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+#navbar-links .active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary);
+  border-radius: 3px 3px 0 0;
+}
