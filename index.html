@@ -295,10 +295,10 @@
         <section id="profile" class="hidden-section">
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <img src="https://m.media-amazon.com/images/S/aplus-media/vc/eeae6f85-4736-4672-9a64-a17ceefe4d87._SL300__.png" alt="Profile Avatar">
+                    <img id="profile-avatar" src="https://m.media-amazon.com/images/S/aplus-media/vc/eeae6f85-4736-4672-9a64-a17ceefe4d87._SL300__.png" alt="Profile Avatar">
                 </div>
                 <div class="profile-info">
-                    <h2>Your Profile</h2>
+                    <h2 id="profile-username">Your Profile</h2>
                     <div class="profile-stats">
                         <div class="stat">
                             <span class="stat-value">2</span>
@@ -1682,41 +1682,43 @@
       <!-- Updated settings section without password fields and privacy tab -->
 <section class="settings active-section" id="settings">
     <h2>Settings</h2>
-    
-    <div class="settings-container">
-        <div class="settings-sidebar">
-            <ul>
-                <li class="active"><a href="#account">Account</a></li>
-                <li><a href="#notifications">Notifications</a></li>
-            </ul>
-        </div>
-        
-        <div class="settings-content">
-            <div id="account" class="settings-section active">
-                <h3>Account Settings</h3>
-                
-                <form class="settings-form" id="account-settings-form">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" class="form-control">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" class="form-control">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="avatar">Profile Picture</label>
-                        <div class="avatar-selector">
-                            <img src="/placeholder.svg" alt="Current Avatar" class="current-avatar">
-                            <button type="button" class="change-avatar-btn" id="change-avatar-btn">Change Avatar</button>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="save-settings-btn">Save Changes</button>
-                </form>
+
+        <div class="settings-container">
+            <div class="settings-sidebar">
+                <ul>
+                    <li class="active"><a href="#account">Account</a></li>
+                    <li><a href="#notifications">Notifications</a></li>
+                </ul>
             </div>
+
+            <div class="settings-content">
+                <div id="account" class="settings-section active">
+                    <h3>Account Settings</h3>
+
+                    <form class="settings-form" id="account-settings-form">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="avatar">Profile Picture</label>
+                            <div class="avatar-selector">
+                                <img id="current-avatar" src="https://m.media-amazon.com/images/S/aplus-media/vc/eeae6f85-4736-4672-9a64-a17ceefe4d87._SL300__.png" alt="Current Avatar" class="current-avatar">
+                                <button type="button" class="change-avatar-btn" id="change-avatar-btn">Change Avatar</button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="save-settings-btn">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
             
             <div id="notifications" class="settings-section">
                 <h3>Notification Settings</h3>
