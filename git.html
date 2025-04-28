@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Friend Manager</title>
+    <link rel="stylesheet" href="git.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GitHub Friend Manager</h1>
+            <p>Search for GitHub users and add them as friends</p>
+        </header>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="username-input" placeholder="Enter GitHub username">
+                <button id="search-btn">Search</button>
+            </div>
+        </div>
+
+        <div id="user-profile" class="hidden">
+            <div class="profile-header">
+                <img id="user-avatar" src="/placeholder.svg" alt="User avatar">
+                <div class="profile-info">
+                    <h2 id="user-name"></h2>
+                    <p id="user-login"></p>
+                    <p id="user-bio"></p>
+                    <div class="user-stats">
+                        <span id="user-repos"></span>
+                        <span id="user-followers"></span>
+                        <span id="user-following"></span>
+                    </div>
+                    <a id="user-profile-link" href="#" target="_blank">View Profile</a>
+                    <button id="add-friend-btn">Add as Friend</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-message" class="hidden">
+            <p>User not found. Please try another username.</p>
+        </div>
+
+        <div id="friends-container" class="hidden">
+            <h2>Your Friends</h2>
+            <div id="friends-list"></div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification hidden"></div>
+
+    <script src="git.js"></script>
+</body>
+</html>
