@@ -1,59 +1,15 @@
 /* GitHub Friend Manager Styles */
-:root {
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --secondary: #10b981;
-  --secondary-dark: #059669;
-  --dark: #1e293b;
-  --darker: #0f172a;
-  --light: #f8fafc;
-  --gray: #64748b;
-  --light-gray: #e2e8f0;
-  --danger: #ef4444;
-  --warning: #f59e0b;
-  --success: #10b981;
-}
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Inter", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-  background-color: var(--light);
-  color: var(--dark);
-  line-height: 1.6;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-/* Header Styles */
-header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
-
-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--darker);
-  margin-bottom: 0.5rem;
-}
-
-header p {
-  font-size: 1.2rem;
-  color: var(--gray);
+/* Main Container Styles */
+.github-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 /* Search Container */
 .search-container {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .search-box {
@@ -63,16 +19,27 @@ header p {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
   overflow: hidden;
+  background-color: white;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray);
 }
 
 #username-input {
   flex: 1;
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 2.5rem;
   border: 1px solid var(--light-gray);
   border-right: none;
   border-radius: 8px 0 0 8px;
   font-size: 1rem;
   outline: none;
+  font-family: "Inter", sans-serif;
 }
 
 #username-input:focus {
@@ -96,133 +63,129 @@ header p {
 
 /* User Profile */
 #user-profile {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  padding: 2rem;
-  margin-bottom: 2.5rem;
-  transition: transform 0.3s, box-shadow 0.3s;
+  margin-bottom: 2rem;
 }
 
-#user-profile:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.profile-header {
-  display: flex;
-  gap: 2rem;
-}
-
-#user-avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid var(--primary);
-}
-
-.profile-info {
-  flex: 1;
-}
-
-#user-name {
-  font-size: 1.8rem;
-  margin-bottom: 0.3rem;
-  color: var(--darker);
-}
-
-#user-login {
+.user-login {
   font-size: 1.2rem;
   color: var(--gray);
   margin-bottom: 1rem;
 }
 
-#user-bio {
+.user-bio {
   margin-bottom: 1.5rem;
   line-height: 1.6;
+  color: var(--dark);
 }
 
-.user-stats {
+.profile-actions {
   display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
-.user-stats span {
-  font-weight: 600;
-  color: var(--primary);
-}
-
-#user-profile-link {
-  display: inline-block;
-  margin-right: 1rem;
+.profile-btn {
   padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s;
+}
+
+.view-profile-btn {
   background-color: var(--dark);
   color: white;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background-color 0.3s;
 }
 
-#user-profile-link:hover {
+.view-profile-btn:hover {
   background-color: var(--darker);
 }
 
-#add-friend-btn {
-  padding: 0.8rem 1.5rem;
+.add-friend-btn {
   background-color: var(--primary);
   color: white;
   border: none;
-  border-radius: 5px;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-#add-friend-btn:hover {
+.add-friend-btn:hover {
   background-color: var(--primary-dark);
 }
 
 /* Error Message */
-#error-message {
+.error-message {
   background-color: rgba(239, 68, 68, 0.1);
   color: var(--danger);
-  padding: 1rem;
-  border-radius: 5px;
+  padding: 1.5rem;
+  border-radius: 10px;
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.error-icon {
+  font-size: 2rem;
 }
 
 /* Friends Container */
-#friends-container {
+.friends-section {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   padding: 2rem;
+  margin-bottom: 2rem;
 }
 
-#friends-container h2 {
-  font-size: 1.8rem;
+.friends-section h2 {
   margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--light-gray);
+  text-align: center;
 }
 
-#friends-list {
+.friends-filter {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  background-color: var(--light-gray);
+  color: var(--dark);
+  font-weight: 500;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+.friends-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
 }
 
 .friend-card {
   background-color: var(--light);
-  border-radius: 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   padding: 1.5rem;
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -232,41 +195,84 @@ header p {
 }
 
 .friend-avatar {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+}
+
+.friend-avatar img {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--primary);
 }
 
 .friend-info {
-  flex: 1;
+  text-align: center;
 }
 
 .friend-name {
+  font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 0.3rem;
+  color: var(--darker);
 }
 
 .friend-login {
   color: var(--gray);
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
 }
 
-.remove-friend {
-  color: var(--danger);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0.3rem 0.5rem;
-  border-radius: 3px;
+.friend-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.friend-stats span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.friend-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.view-friend-btn {
+  padding: 0.6rem;
+  background-color: var(--dark);
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
   transition: background-color 0.3s;
 }
 
-.remove-friend:hover {
+.view-friend-btn:hover {
+  background-color: var(--darker);
+}
+
+.remove-friend-btn {
+  padding: 0.6rem;
   background-color: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.remove-friend-btn:hover {
+  background-color: var(--danger);
+  color: white;
 }
 
 /* Notification */
@@ -282,11 +288,54 @@ header p {
   transform: translateY(100px);
   opacity: 0;
   transition: transform 0.3s, opacity 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 1000;
 }
 
 .notification.show {
   transform: translateY(0);
   opacity: 1;
+}
+
+.notification-icon {
+  font-size: 1.5rem;
+}
+
+/* Dark Mode Styles */
+body.dark-mode .search-box {
+  background-color: var(--dark);
+}
+
+body.dark-mode #username-input {
+  background-color: var(--dark);
+  color: var(--light);
+  border-color: var(--darker);
+}
+
+body.dark-mode .friends-section,
+body.dark-mode .friend-card {
+  background-color: var(--dark);
+  color: var(--light);
+}
+
+body.dark-mode .friend-name {
+  color: var(--light);
+}
+
+body.dark-mode .user-bio {
+  color: var(--light);
+}
+
+body.dark-mode .filter-btn {
+  background-color: var(--darker);
+  color: var(--light);
+}
+
+body.dark-mode .filter-btn.active,
+body.dark-mode .filter-btn:hover {
+  background-color: var(--primary);
 }
 
 /* Utility Classes */
@@ -302,14 +351,25 @@ header p {
     text-align: center;
   }
   
-  .user-stats {
+  .profile-stats {
     justify-content: center;
   }
   
-  #user-profile-link, #add-friend-btn {
-    display: block;
+  .profile-actions {
+    flex-direction: column;
     width: 100%;
-    margin-bottom: 1rem;
-    text-align: center;
+  }
+  
+  .profile-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .friends-filter {
+    flex-wrap: wrap;
+  }
+  
+  .friends-grid {
+    grid-template-columns: 1fr;
   }
 }
