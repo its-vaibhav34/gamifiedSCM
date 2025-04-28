@@ -373,3 +373,10 @@ body.dark-mode .filter-btn:hover {
     grid-template-columns: 1fr;
   }
 }
+.hidden-section {
+  display: none;
+}
+
+.active-section {
+  display: block;
+}
