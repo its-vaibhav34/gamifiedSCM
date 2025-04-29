@@ -185,81 +185,90 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-async function searchUser() {
-  const username = usernameInput.value.trim();
-
-  if (!username) {
-    showNotification("Please enter a GitHub username", true);
-    return;
-  }
-
-  try {
-    // Show loading state
-    searchBtn.textContent = "Searching...";
-    searchBtn.disabled = true;
-
-    // Reset UI
-    if (userProfile) userProfile.classList.add("hidden");
-    if (errorMessage) errorMessage.classList.add("hidden");
-
-    // Fetch user data from GitHub API
-    const response = await fetch(`https://api.github.com/users/${username}`);
-    
-    if (!response.ok) {
-      if (response.status === 403) {
-        throw new Error("API rate limit exceeded. Please try again later.");
-      } else if (response.status === 404) {
-        throw new Error("User not found");
-      } else {
-        throw new Error(`GitHub API error: ${response.status}`);
+  async function searchUser() {
+    const username = usernameInput.value.trim();
+  
+    if (!username) {
+      showNotification("Please enter a GitHub username", true);
+      return;
+    }
+  
+    try {
+      // Show loading state
+      searchBtn.textContent = "Searching...";
+      searchBtn.disabled = true;
+  
+      // Reset UI
+      if (userProfile) userProfile.classList.add("hidden");
+      if (errorMessage) errorMessage.classList.add("hidden");
+  
+      // Fetch user data from GitHub API
+      const response = await fetch(`https://api.github.com/users/${username}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer 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',
+          'Accept': 'application/vnd.github+json'
+        }
+      });
+      
+      const data = await response.json();  // Parse the response once
+      console.log(data);  // Log the full data to inspect its structure
+  
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("API rate limit exceeded. Please try again later.");
+        } else if (response.status === 404) {
+          throw new Error("User not found");
+        } else {
+          throw new Error(`GitHub API error: ${response.status}`);
+        }
+      }
+  
+      const userData = data;  // Use the parsed data
+  
+      // Display user data with null checks
+      if (userAvatar) userAvatar.src = userData.avatar_url;
+      if (userName) userName.textContent = userData.name || userData.login;
+      if (userLogin) userLogin.textContent = `@${userData.login}`;
+      if (userBio) userBio.textContent = userData.bio || "No bio available";
+      if (userRepos) userRepos.textContent = `${userData.public_repos || 0} Repositories`; // Ensure it shows the correct count
+      if (userFollowers) userFollowers.textContent = `${userData.followers || 0} Followers`;
+      if (userFollowing) userFollowing.textContent = `${userData.following || 0} Following`;
+      if (userProfileLink) userProfileLink.href = userData.html_url;
+  
+      // Check if user is already a friend
+      const isFriend = friends.some((friend) => friend.id === userData.id);
+      if (addFriendBtn) {
+        if (isFriend) {
+          addFriendBtn.textContent = "Already a Friend";
+          addFriendBtn.disabled = true;
+        } else {
+          addFriendBtn.textContent = "Add as Friend";
+          addFriendBtn.disabled = false;
+        }
+      }
+  
+      // Show user profile
+      if (userProfile) userProfile.classList.remove("hidden");
+      
+      // Fetch user repositories if needed
+      await fetchUserRepositories(username);
+      
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      if (errorMessage) {
+        errorMessage.querySelector("p").textContent = error.message || "User not found. Please try another username.";
+        errorMessage.classList.remove("hidden");
+      }
+    } finally {
+      // Reset button state
+      if (searchBtn) {
+        searchBtn.textContent = "Search";
+        searchBtn.disabled = false;
       }
     }
-
-    const userData = await response.json();
-    currentUser = userData;
-
-    // Display user data with null checks
-    if (userAvatar) userAvatar.src = userData.avatar_url;
-    if (userName) userName.textContent = userData.name || userData.login;
-    if (userLogin) userLogin.textContent = `@${userData.login}`;
-    if (userBio) userBio.textContent = userData.bio || "No bio available";
-    if (userRepos) userRepos.textContent = `${userData.public_repos} Repositories`;
-    if (userFollowers) userFollowers.textContent = `${userData.followers} Followers`;
-    if (userFollowing) userFollowing.textContent = `${userData.following} Following`;
-    if (userProfileLink) userProfileLink.href = userData.html_url;
-
-    // Check if user is already a friend
-    const isFriend = friends.some((friend) => friend.id === userData.id);
-    if (addFriendBtn) {
-      if (isFriend) {
-        addFriendBtn.textContent = "Already a Friend";
-        addFriendBtn.disabled = true;
-      } else {
-        addFriendBtn.textContent = "Add as Friend";
-        addFriendBtn.disabled = false;
-      }
-    }
-
-    // Show user profile
-    if (userProfile) userProfile.classList.remove("hidden");
-    
-    // Fetch user repositories
-    await fetchUserRepositories(username);
-    
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    if (errorMessage) {
-      errorMessage.querySelector("p").textContent = error.message || "User not found. Please try another username.";
-      errorMessage.classList.remove("hidden");
-    }
-  } finally {
-    // Reset button state
-    if (searchBtn) {
-      searchBtn.textContent = "Search";
-      searchBtn.disabled = false;
-    }
   }
-}
+  
   
   async function fetchUserRepositories(username) {
     try {
