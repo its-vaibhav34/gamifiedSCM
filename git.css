@@ -344,7 +344,7 @@ body.dark-mode .filter-btn:hover {
 }
 
 /* Responsive Styles */
-@media (max-width: 768px) {
+@media (max-width: 775px) {
   .profile-header {
     flex-direction: column;
     align-items: center;
