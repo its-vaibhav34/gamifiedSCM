@@ -63,6 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let projectFiles = JSON.parse(localStorage.getItem("projectFiles")) || {};
   let projectCommits = JSON.parse(localStorage.getItem("projectCommits")) || {};
 
+  // Initialize dark mode
+  initDarkMode();
+
   // Display friends if any exist
   if (friends.length > 0) {
     displayFriends();
@@ -97,10 +100,12 @@ document.addEventListener("DOMContentLoaded", () => {
   repoSearchInput.addEventListener("input", filterRepositories);
   
   // Project navigation
-  backToProjectsBtn.addEventListener("click", () => {
-    projectDetails.classList.add("hidden");
-    projectsContainer.classList.remove("hidden");
-  });
+  if (backToProjectsBtn) {
+    backToProjectsBtn.addEventListener("click", () => {
+      projectDetails.classList.add("hidden");
+      projectsContainer.classList.remove("hidden");
+    });
+  }
   
   // Tab navigation
   tabBtns.forEach(btn => {
@@ -117,22 +122,69 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   // Codespace events
-  addFileBtn.addEventListener("click", () => {
-    addFileModal.classList.remove("hidden");
-    newFileName.value = "";
-    newFileName.focus();
-  });
+  if (addFileBtn) {
+    addFileBtn.addEventListener("click", () => {
+      addFileModal.classList.remove("hidden");
+      newFileName.value = "";
+      newFileName.focus();
+    });
+  }
   
-  createFileBtn.addEventListener("click", createNewFile);
-  saveFileBtn.addEventListener("click", saveCurrentFile);
-  commitChangesBtn.addEventListener("click", commitChanges);
+  if (createFileBtn) createFileBtn.addEventListener("click", createNewFile);
+  if (saveFileBtn) saveFileBtn.addEventListener("click", saveCurrentFile);
+  if (commitChangesBtn) commitChangesBtn.addEventListener("click", commitChanges);
   
-  codeEditor.addEventListener("input", () => {
-    unsavedChanges = true;
-    saveFileBtn.disabled = false;
-  });
+  if (codeEditor) {
+    codeEditor.addEventListener("input", () => {
+      unsavedChanges = true;
+      saveFileBtn.disabled = false;
+    });
+  }
+
+  // Friend filtering
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  if (filterButtons.length > 0) {
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Add active class to clicked button
+        button.classList.add('active');
+        
+        // Get filter value
+        const filter = button.getAttribute('data-filter');
+        
+        // Filter friends
+        filterFriends(filter);
+      });
+    });
+  }
 
   // Functions
+  function initDarkMode() {
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    
+    if (!darkModeToggle) return;
+    
+    // Check if dark mode is enabled in localStorage
+    if (localStorage.getItem("darkMode") === "enabled") {
+      document.body.classList.add("dark-mode");
+      darkModeToggle.checked = true;
+    }
+    
+    // Toggle dark mode
+    darkModeToggle.addEventListener("change", () => {
+      if (darkModeToggle.checked) {
+        document.body.classList.add("dark-mode");
+        localStorage.setItem("darkMode", "enabled");
+      } else {
+        document.body.classList.remove("dark-mode");
+        localStorage.setItem("darkMode", "disabled");
+      }
+    });
+  }
+
   async function searchUser() {
     const username = usernameInput.value.trim();
 
@@ -205,18 +257,15 @@ document.addEventListener("DOMContentLoaded", () => {
   async function fetchUserRepositories(username) {
     try {
       // Fetch repositories from GitHub API
-        // Fetch user data from GitHub API
-      const response = await fetch(`https://api.github.com/users/${username}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer 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',
-          'Accept': 'application/vnd.github+json'
+      const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+      
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("API rate limit exceeded. Please try again later.");
+        } else {
+          throw new Error(`GitHub API error: ${response.status}`);
         }
-      });
-      
-      
-      const userData = await response.json();
-      currentUser = userData;
+      }
 
       const repos = await response.json();
       userRepositories = repos.map(repo => ({
@@ -252,7 +301,10 @@ document.addEventListener("DOMContentLoaded", () => {
       name: currentUser.name || currentUser.login,
       avatar_url: currentUser.avatar_url,
       html_url: currentUser.html_url,
+      repos: currentUser.public_repos,
+      followers: currentUser.followers,
       added_at: new Date().toISOString(),
+      collaborating: false
     });
 
     // Save to localStorage
@@ -285,10 +337,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const friendCard = document.createElement("div");
       friendCard.className = "friend-card";
       
+      // Set data attributes for filtering
+      friendCard.setAttribute("data-added", friend.added_at);
+      friendCard.setAttribute("data-repos", friend.repos || 0);
+      friendCard.setAttribute("data-followers", friend.followers || 0);
+      
       // Check if friend has collaborative projects
       const hasProjects = collaborativeProjects.some(project => 
-        project.collaborators.some(collab => collab.id === friend.id)
+        project.collaborators && project.collaborators.some(collab => collab.id === friend.id)
       );
+      
+      // Update collaborating status
+      friend.collaborating = hasProjects;
+      friendCard.setAttribute("data-collaborating", hasProjects ? "true" : "false");
       
       friendCard.innerHTML = `
         <img class="friend-avatar" src="${friend.avatar_url}" alt="${friend.login}">
@@ -322,6 +383,59 @@ document.addEventListener("DOMContentLoaded", () => {
         viewProjectsBtn.addEventListener("click", () => {
           filterProjectsByFriend(friend.id);
         });
+      }
+    });
+  }
+
+  function filterFriends(filter) {
+    const friendCards = document.querySelectorAll('.friend-card');
+    
+    friendCards.forEach(card => {
+      if (filter === 'all') {
+        card.style.display = 'flex';
+      } else if (filter === 'recent') {
+        // Show only friends added in the last 7 days
+        const addedDate = new Date(card.getAttribute('data-added'));
+        const now = new Date();
+        const diffTime = Math.abs(now - addedDate);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays <= 7) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      } else if (filter === 'most-repos') {
+        // Sort by repository count (show all but in sorted order)
+        const friendCards = Array.from(document.querySelectorAll('.friend-card'));
+        const sortedCards = friendCards.sort((a, b) => {
+          return parseInt(b.getAttribute('data-repos')) - parseInt(a.getAttribute('data-repos'));
+        });
+        
+        // Remove and re-append in sorted order
+        sortedCards.forEach(card => {
+          card.parentNode.appendChild(card);
+          card.style.display = 'flex';
+        });
+      } else if (filter === 'most-followers') {
+        // Sort by follower count (show all but in sorted order)
+        const friendCards = Array.from(document.querySelectorAll('.friend-card'));
+        const sortedCards = friendCards.sort((a, b) => {
+          return parseInt(b.getAttribute('data-followers')) - parseInt(a.getAttribute('data-followers'));
+        });
+        
+        // Remove and re-append in sorted order
+        sortedCards.forEach(card => {
+          card.parentNode.appendChild(card);
+          card.style.display = 'flex';
+        });
+      } else if (filter === 'collaborating') {
+        // Show only friends with active collaborations
+        if (card.getAttribute('data-collaborating') === 'true') {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
       }
     });
   }
@@ -361,6 +475,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Filter out projects where the removed friend was the only collaborator
     collaborativeProjects = collaborativeProjects.filter(project => {
       // Keep projects with other collaborators
+      if (!project.collaborators) return false;
+      
       const otherCollaborators = project.collaborators.filter(collab => collab.id !== friendId);
       if (otherCollaborators.length > 0) {
         // Update project collaborators
@@ -445,7 +561,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Get existing collaborations for this friend
     const existingCollabs = collaborativeProjects
-      .filter(project => project.collaborators.some(collab => collab.id === currentFriend.id))
+      .filter(project => project.collaborators && project.collaborators.some(collab => collab.id === currentFriend.id))
       .map(project => project.repo_id);
     
     repos.forEach(repo => {
@@ -522,7 +638,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     // Filter out projects with no collaborators
-    collaborativeProjects = collaborativeProjects.filter(project => project.collaborators.length > 0);
+    collaborativeProjects = collaborativeProjects.filter(project => 
+      project.collaborators && project.collaborators.length > 0
+    );
     
     // Add friend to newly selected projects
     selectedRepoIds.forEach(repoId => {
@@ -563,6 +681,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
+    
+    // Update friend's collaborating status
+    const friendIndex = friends.findIndex(friend => friend.id === currentFriend.id);
+    if (friendIndex !== -1) {
+      friends[friendIndex].collaborating = selectedRepoIds.length > 0;
+      localStorage.setItem("githubFriends", JSON.stringify(friends));
+    }
     
     // Save to localStorage
     localStorage.setItem("collaborativeProjects", JSON.stringify(collaborativeProjects));
@@ -630,6 +755,8 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     
     sortedProjects.forEach(project => {
+      if (!project.collaborators || project.collaborators.length === 0) return;
+      
       const projectCard = document.createElement("div");
       projectCard.className = "project-card";
       projectCard.setAttribute("data-id", project.id);
@@ -665,7 +792,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function filterProjectsByFriend(friendId) {
     // Filter projects where the friend is a collaborator
     const filteredProjects = collaborativeProjects.filter(project => 
-      project.collaborators.some(collab => collab.id === friendId)
+      project.collaborators && project.collaborators.some(collab => collab.id === friendId)
     );
     
     // Display filtered projects
@@ -722,23 +849,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     // Update project details
-    projectName.textContent = currentProject.name;
-    projectDescription.textContent = currentProject.description || 'No description';
+    if (projectName) projectName.textContent = currentProject.name;
+    if (projectDescription) projectDescription.textContent = currentProject.description || 'No description';
     
     // Load project data
-    loadProjectCommits();
-    loadProjectFiles();
-    loadCodespaceFiles();
+    if (typeof loadProjectCommits === 'function') loadProjectCommits();
+    if (typeof loadProjectFiles === 'function') loadProjectFiles();
+    if (typeof loadCodespaceFiles === 'function') loadCodespaceFiles();
     
     // Show project details and hide projects list
-    projectsContainer.classList.add("hidden");
-    projectDetails.classList.remove("hidden");
+    if (projectsContainer && projectDetails) {
+      projectsContainer.classList.add("hidden");
+      projectDetails.classList.remove("hidden");
     
-    // Reset to commits tab
-    document.querySelector('.tab-btn[data-tab="commits"]').click();
+      // Reset to commits tab
+      const commitsTab = document.querySelector('.tab-btn[data-tab="commits"]');
+      if (commitsTab) commitsTab.click();
+    }
   }
   
   function loadProjectCommits() {
+    if (!commitsList) return;
+    
     commitsList.innerHTML = "";
     
     const commits = projectCommits[currentProject.id] || [];
@@ -757,7 +889,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const commitItem = document.createElement("div");
       commitItem.className = "commit-item";
       
-      const date = new Date(commit.date);
       const formattedDate = formatDate(commit.date);
       
       commitItem.innerHTML = `
@@ -776,6 +907,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function loadProjectFiles() {
+    if (!filesList) return;
+    
     filesList.innerHTML = "";
     
     const files = projectFiles[currentProject.id] || [];
@@ -814,6 +947,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function loadCodespaceFiles() {
+    if (!codespaceFiles) return;
+    
     codespaceFiles.innerHTML = "";
     
     const files = projectFiles[currentProject.id] || [];
@@ -882,9 +1017,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     document.querySelector(`.codespace-file[data-id="${fileId}"]`).classList.add("active");
     
-    currentFileElement.textContent = file.name;
-    codeEditor.value = file.content;
-    saveFileBtn.disabled = true;
+    if (currentFileElement) currentFileElement.textContent = file.name;
+    if (codeEditor) {
+      codeEditor.value = file.content;
+      saveFileBtn.disabled = true;
+    }
     unsavedChanges = false;
   }
   

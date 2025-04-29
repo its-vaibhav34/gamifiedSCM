@@ -3,136 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Collaboration Platform</title>
+    <title>GitHub Friend Manager - Git Quest</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="git.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>GitHub Collaboration Platform</h1>
-            <p>Search for GitHub users, add them as friends, and collaborate on projects</p>
-        </header>
-
-        <div class="search-container">
-            <div class="search-box">
-                <input type="text" id="username-input" placeholder="Enter GitHub username">
-                <button id="search-btn">Search</button>
+    <header>
+        <div class="logo">
+            <i class="fa-brands fa-git-alt"></i>
+            <h1>Git Quest</h1>
+        </div>
+        <nav>
+            <ul id="navbar-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#challenges">Challenges</a></li>
+                <li><a href="index.html#leaderboard">Leaderboard</a></li>
+                <li><a href="index.html#profile">Profile</a></li>
+                <li><a href="index.html#documentation">Docs</a></li>
+                <li><a href="index.html#settings">Settings</a></li>
+                <li><a href="index.html#forum">Forum</a></li>
+                <li class="active"><a href="git.html">Collaboration</a></li>
+            </ul>
+        </nav>
+        
+        <div class="user-info">
+            <div class="xp-container">
+                <span class="xp-label">XP:</span>
+                <span class="xp-value">120</span>
+            </div>
+            <div class="level-container">
+                <span class="level-label">Level:</span>
+                <span class="level-value">2</span>
+            </div>
+            <div class="user-avatar">
+                <img src="https://m.media-amazon.com/images/S/aplus-media/vc/eeae6f85-4736-4672-9a64-a17ceefe4d87._SL300__.png" alt="User Avatar">
             </div>
         </div>
+        <div class="dark-mode-toggle">
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </header>
 
-        <div id="user-profile" class="hidden">
-            <div class="profile-header">
-                <img id="user-avatar" src="/placeholder.svg" alt="User avatar">
+    <main>
+        <section class="github-section active-section">
+            <div class="hero">
+                <h2>GitHub Collaboration Platform</h2>
+                <p>Search for GitHub users, add them as friends, and collaborate on projects</p>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fa-solid fa-user-group"></i>
+                    <h3>Friend Management</h3>
+                    <p>Add GitHub users as friends and organize your collaborations</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-code-branch"></i>
+                    <h3>Repository Access</h3>
+                    <p>Access repositories of your friends and collaborate on projects</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-code-pull-request"></i>
+                    <h3>Pull Requests</h3>
+                    <p>Create and manage pull requests for collaborative development</p>
+                </div>
+            </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-search search-icon"></i>
+                    <input type="text" id="username-input" placeholder="Enter GitHub username">
+                    <button id="search-btn">Search</button>
+                </div>
+            </div>
+
+            <div id="user-profile" class="profile-header hidden">
+                <div class="profile-avatar">
+                    <img id="user-avatar" src="/placeholder.svg?height=120&width=120" alt="User avatar">
+                </div>
                 <div class="profile-info">
                     <h2 id="user-name"></h2>
-                    <p id="user-login"></p>
-                    <p id="user-bio"></p>
-                    <div class="user-stats">
-                        <span id="user-repos"></span>
-                        <span id="user-followers"></span>
-                        <span id="user-following"></span>
-                    </div>
-                    <a id="user-profile-link" href="#" target="_blank">View Profile</a>
-                    <button id="add-friend-btn">Add as Friend</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="error-message" class="hidden">
-            <p>User not found. Please try another username.</p>
-        </div>
-
-        <div id="friends-container" class="hidden">
-            <h2>Your Friends</h2>
-            <div id="friends-list"></div>
-        </div>
-
-        <!-- Repository Selection Modal -->
-        <div id="repo-modal" class="modal hidden">
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h2>Select Repositories to Collaborate</h2>
-                <p id="repo-friend-name"></p>
-                <div class="repo-search">
-                    <input type="text" id="repo-search-input" placeholder="Search your repositories">
-                </div>
-                <div id="repo-list" class="repo-list">
-                    <!-- Repositories will be loaded here -->
-                </div>
-                <div class="modal-actions">
-                    <button id="save-repos-btn">Save Selection</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Projects Container -->
-        <div id="projects-container" class="hidden">
-            <h2>Collaborative Projects</h2>
-            <div id="projects-list"></div>
-        </div>
-
-        <!-- Project Details View -->
-        <div id="project-details" class="hidden">
-            <div class="project-header">
-                <button id="back-to-projects" class="back-btn">← Back to Projects</button>
-                <h2 id="project-name"></h2>
-                <p id="project-description"></p>
-            </div>
-            
-            <div class="project-tabs">
-                <button class="tab-btn active" data-tab="commits">Commits</button>
-                <button class="tab-btn" data-tab="files">Files</button>
-                <button class="tab-btn" data-tab="codespace">Codespace</button>
-            </div>
-            
-            <div id="commits-tab" class="tab-content active">
-                <h3>Recent Commits</h3>
-                <div id="commits-list"></div>
-            </div>
-            
-            <div id="files-tab" class="tab-content">
-                <h3>Repository Files</h3>
-                <div id="files-list"></div>
-            </div>
-            
-            <div id="codespace-tab" class="tab-content">
-                <h3>Codespace</h3>
-                <div class="codespace-container">
-                    <div class="file-explorer">
-                        <h4>Files</h4>
-                        <div id="codespace-files"></div>
-                        <button id="add-file-btn">+ Add New File</button>
-                    </div>
-                    <div class="code-editor">
-                        <div class="editor-header">
-                            <span id="current-file">No file selected</span>
-                            <button id="save-file-btn" disabled>Save</button>
+                    <p id="user-login" class="user-login"></p>
+                    <p id="user-bio" class="user-bio"></p>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <span id="user-repos-count" class="stat-value">0</span>
+                            <span class="stat-label">Repositories</span>
                         </div>
-                        <textarea id="code-editor" placeholder="Select a file to edit or create a new one"></textarea>
+                        <div class="stat">
+                            <span id="user-followers-count" class="stat-value">0</span>
+                            <span class="stat-label">Followers</span>
+                        </div>
+                        <div class="stat">
+                            <span id="user-following-count" class="stat-value">0</span>
+                            <span class="stat-label">Following</span>
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <a id="user-profile-link" href="#" target="_blank" class="profile-btn view-profile-btn">
+                            <i class="fa-solid fa-external-link-alt"></i> View Profile
+                        </a>
+                        <button id="add-friend-btn" class="profile-btn add-friend-btn">
+                            <i class="fa-solid fa-user-plus"></i> Add as Friend
+                        </button>
                     </div>
                 </div>
-                <div class="commit-container">
-                    <input type="text" id="commit-message" placeholder="Enter commit message">
-                    <button id="commit-changes-btn">Commit Changes</button>
+            </div>
+
+            <div id="error-message" class="error-message hidden">
+                <i class="fa-solid fa-circle-exclamation error-icon"></i>
+                <p>User not found. Please try another username.</p>
+            </div>
+
+            <div id="friends-container" class="friends-section hidden">
+                <h2>Your GitHub Friends</h2>
+                
+                <div class="friends-filter">
+                    <button class="filter-btn active" data-filter="all">All Friends</button>
+                    <button class="filter-btn" data-filter="recent">Recently Added</button>
+                    <button class="filter-btn" data-filter="most-repos">Most Repositories</button>
+                    <button class="filter-btn" data-filter="most-followers">Most Followers</button>
+                </div>
+                
+                <div id="friends-list" class="friends-grid"></div>
+            </div>
+
+            <!-- Repository Selection Modal -->
+            <div id="repo-modal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>Select Repositories to Collaborate</h2>
+                    <p id="repo-friend-name"></p>
+                    <div class="repo-search">
+                        <i class="fa-solid fa-search search-icon"></i>
+                        <input type="text" id="repo-search-input" placeholder="Search repositories">
+                    </div>
+                    <div id="repo-list" class="repo-list">
+                        <!-- Repositories will be loaded here -->
+                    </div>
+                    <div class="modal-actions">
+                        <button id="save-repos-btn" class="primary-btn">Save Selection</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div id="notification" class="notification hidden"></div>
-
-    <!-- Add File Modal -->
-    <div id="add-file-modal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Add New File</h2>
-            <input type="text" id="new-file-name" placeholder="Enter file name (e.g. index.js)">
-            <div class="modal-actions">
-                <button id="create-file-btn">Create File</button>
+            <!-- Projects Container -->
+            <div id="projects-container" class="projects-section hidden">
+                <h2>Collaborative Projects</h2>
+                <div id="projects-list" class="projects-grid"></div>
             </div>
-        </div>
+        </section>
+    </main>
+
+    <div id="notification" class="notification hidden">
+        <i class="notification-icon fa-solid fa-check-circle"></i>
+        <span id="notification-message"></span>
     </div>
+
+    <footer>
+        <div class="footer-copyright">
+            <p>&copy; 2025 Git Quest. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script src="git.js"></script>
 </body>
