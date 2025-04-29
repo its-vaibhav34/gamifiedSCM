@@ -185,51 +185,52 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  async function searchUser() {
-    const username = usernameInput.value.trim();
+async function searchUser() {
+  const username = usernameInput.value.trim();
 
-    if (!username) {
-      showNotification("Please enter a GitHub username", true);
-      return;
+  if (!username) {
+    showNotification("Please enter a GitHub username", true);
+    return;
+  }
+
+  try {
+    // Show loading state
+    searchBtn.textContent = "Searching...";
+    searchBtn.disabled = true;
+
+    // Reset UI
+    if (userProfile) userProfile.classList.add("hidden");
+    if (errorMessage) errorMessage.classList.add("hidden");
+
+    // Fetch user data from GitHub API
+    const response = await fetch(`https://api.github.com/users/${username}`);
+    
+    if (!response.ok) {
+      if (response.status === 403) {
+        throw new Error("API rate limit exceeded. Please try again later.");
+      } else if (response.status === 404) {
+        throw new Error("User not found");
+      } else {
+        throw new Error(`GitHub API error: ${response.status}`);
+      }
     }
 
-    try {
-      // Show loading state
-      searchBtn.textContent = "Searching...";
-      searchBtn.disabled = true;
+    const userData = await response.json();
+    currentUser = userData;
 
-      // Reset UI
-      userProfile.classList.add("hidden");
-      errorMessage.classList.add("hidden");
+    // Display user data with null checks
+    if (userAvatar) userAvatar.src = userData.avatar_url;
+    if (userName) userName.textContent = userData.name || userData.login;
+    if (userLogin) userLogin.textContent = `@${userData.login}`;
+    if (userBio) userBio.textContent = userData.bio || "No bio available";
+    if (userRepos) userRepos.textContent = `${userData.public_repos} Repositories`;
+    if (userFollowers) userFollowers.textContent = `${userData.followers} Followers`;
+    if (userFollowing) userFollowing.textContent = `${userData.following} Following`;
+    if (userProfileLink) userProfileLink.href = userData.html_url;
 
-      // Fetch user data from GitHub API
-      const response = await fetch(`https://api.github.com/users/${username}`);
-      
-      if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error("API rate limit exceeded. Please try again later.");
-        } else if (response.status === 404) {
-          throw new Error("User not found");
-        } else {
-          throw new Error(`GitHub API error: ${response.status}`);
-        }
-      }
-
-      const userData = await response.json();
-      currentUser = userData;
-
-      // Display user data
-      userAvatar.src = userData.avatar_url;
-      userName.textContent = userData.name || userData.login;
-      userLogin.textContent = `@${userData.login}`;
-      userBio.textContent = userData.bio || "No bio available";
-      userRepos.textContent = `${userData.public_repos} Repositories`;
-      userFollowers.textContent = `${userData.followers} Followers`;
-      userFollowing.textContent = `${userData.following} Following`;
-      userProfileLink.href = userData.html_url;
-
-      // Check if user is already a friend
-      const isFriend = friends.some((friend) => friend.id === userData.id);
+    // Check if user is already a friend
+    const isFriend = friends.some((friend) => friend.id === userData.id);
+    if (addFriendBtn) {
       if (isFriend) {
         addFriendBtn.textContent = "Already a Friend";
         addFriendBtn.disabled = true;
@@ -237,22 +238,28 @@ document.addEventListener("DOMContentLoaded", () => {
         addFriendBtn.textContent = "Add as Friend";
         addFriendBtn.disabled = false;
       }
+    }
 
-      // Show user profile
-      userProfile.classList.remove("hidden");
-      
-      // Fetch user repositories
-      await fetchUserRepositories(username);
-    } catch (error) {
-      console.error("Error fetching user:", error);
+    // Show user profile
+    if (userProfile) userProfile.classList.remove("hidden");
+    
+    // Fetch user repositories
+    await fetchUserRepositories(username);
+    
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    if (errorMessage) {
       errorMessage.querySelector("p").textContent = error.message || "User not found. Please try another username.";
       errorMessage.classList.remove("hidden");
-    } finally {
-      // Reset button state
+    }
+  } finally {
+    // Reset button state
+    if (searchBtn) {
       searchBtn.textContent = "Search";
       searchBtn.disabled = false;
     }
   }
+}
   
   async function fetchUserRepositories(username) {
     try {
@@ -514,25 +521,39 @@ document.addEventListener("DOMContentLoaded", () => {
   
   async function openRepositoryModal(friend) {
     currentFriend = friend;
-    repoFriendName.textContent = `Select repositories to collaborate with ${friend.name}`;
-    
-    // Show loading state in repo list
-    repoList.innerHTML = "<div class='repo-item'>Loading repositories...</div>";
+    const repoModal = document.getElementById("repo-modal");
+    const repoList = document.getElementById("repo-list");
+    const repoFriendName = document.getElementById("repo-friend-name");
+  
+    // Display the modal
     repoModal.classList.remove("hidden");
-    
-    try {
-      // Fetch friend's repositories
-      const response = await fetch(`https://api.github.com/users/${friend.login}/repos?sort=updated&per_page=100`);
-      
-      if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error("API rate limit exceeded. Please try again later.");
-        } else {
-          throw new Error(`GitHub API error: ${response.status}`);
-        }
-      }
 
+    repoModal.style.display = "block"; // force show the modal (in case CSS hides it)
+console.log("REPO MODAL OPENED");
+console.log("Friend:", friend.login);
+console.log("Repos to show:", userRepositories);
+
+    // Set the friend name label
+    repoFriendName.textContent = `Select repositories to collaborate with ${friend.name || friend.login}`;
+  
+    // Show loading while fetching
+    repoList.innerHTML = "<div class='repo-item'>Loading repositories...</div>";
+  
+    try {
+      const response = await fetch(`https://api.github.com/users/${friend.login}/repos?sort=updated&per_page=100`);
+  
+      if (!response.ok) {
+        throw new Error(`GitHub API error: ${response.status}`);
+      }
+  
       const repos = await response.json();
+  
+      if (!Array.isArray(repos) || repos.length === 0) {
+        repoList.innerHTML = "<div class='repo-item'>No repositories found for this user.</div>";
+        return;
+      }
+  
+      // Store repositories in global array
       userRepositories = repos.map(repo => ({
         id: repo.id.toString(),
         name: repo.name,
@@ -542,57 +563,70 @@ document.addEventListener("DOMContentLoaded", () => {
         html_url: repo.html_url,
         owner: repo.owner.login
       }));
-      
-      // Display repositories
+  
+      console.log("Fetched Repositories for", friend.login, userRepositories);
+  
+      // Render them in the modal
       displayRepositories(userRepositories);
+  
     } catch (error) {
       console.error("Error fetching repositories:", error);
       repoList.innerHTML = `<div class='repo-item'>Error: ${error.message}</div>`;
     }
   }
   
+  
   function displayRepositories(repos) {
+    const repoList = document.getElementById("repo-list");
+    if (!repoList) return;
+  
     repoList.innerHTML = "";
-    
-    if (repos.length === 0) {
-      repoList.innerHTML = "<div class='repo-item'>No repositories found</div>";
+  
+    if (!repos || repos.length === 0) {
+      repoList.innerHTML = "<div class='repo-item'>No repositories found.</div>";
       return;
     }
-    
-    // Get existing collaborations for this friend
+  
+    // Get existing selected repos for this friend (optional: to show as checked)
     const existingCollabs = collaborativeProjects
-      .filter(project => project.collaborators && project.collaborators.some(collab => collab.id === currentFriend.id))
-      .map(project => project.repo_id);
-    
+      .filter(p => p.collaborators?.some(c => c.id === currentFriend.id))
+      .map(p => p.repo_id);
+  
     repos.forEach(repo => {
-      const isCollaborating = existingCollabs.includes(repo.id);
-      
+      const isChecked = existingCollabs.includes(repo.id);
+  
       const repoItem = document.createElement("div");
       repoItem.className = "repo-item";
-      
-      // Determine language color
+  
       let languageColor = "#ccc";
       if (repo.language === "JavaScript") languageColor = "#f1e05a";
       else if (repo.language === "HTML") languageColor = "#e34c26";
       else if (repo.language === "CSS") languageColor = "#563d7c";
       else if (repo.language === "Python") languageColor = "#3572A5";
       else if (repo.language === "Java") languageColor = "#b07219";
-      
+      else if (repo.language === "C") languageColor = "#555";
+  
       repoItem.innerHTML = `
-        <input type="checkbox" class="repo-checkbox" data-id="${repo.id}" ${isCollaborating ? 'checked' : ''}>
-        <div>
-          <div class="repo-name">${repo.name}</div>
-          <div class="repo-description">${repo.description || 'No description'}</div>
-          <div class="repo-meta">
-            ${repo.language ? `<span class="repo-language"><span class="language-color" style="background-color: ${languageColor}"></span>${repo.language}</span>` : ''}
-            <span class="repo-updated">Updated ${formatDate(repo.updated_at)}</span>
+        <label style="display: flex; gap: 0.75rem; align-items: flex-start; cursor: pointer;">
+          <input type="checkbox" class="repo-checkbox" data-id="${repo.id}" style="margin-top: 6px;" ${isChecked ? 'checked' : ''}>
+          <div>
+            <div class="repo-name" style="font-weight: bold;">${repo.name}</div>
+            <div class="repo-description">${repo.description || "No description"}</div>
+            <div class="repo-meta" style="font-size: 0.85rem; color: #666;">
+              ${repo.language ? `<span class="repo-language"><span class="language-color" style="background-color: ${languageColor}; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px;"></span>${repo.language}</span>` : ''}
+              <span class="repo-updated"> • Updated ${formatDate(repo.updated_at)}</span>
+            </div>
           </div>
-        </div>
+        </label>
       `;
-      
+  
       repoList.appendChild(repoItem);
     });
   }
+  
+  
+  
+  
   
   function filterRepositories() {
     const searchTerm = repoSearchInput.value.toLowerCase();
@@ -605,51 +639,43 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function saveSelectedRepositories() {
-    const checkboxes = repoList.querySelectorAll(".repo-checkbox");
+    const checkboxes = document.querySelectorAll(".repo-checkbox");
     const selectedRepoIds = [];
-    
+  
     checkboxes.forEach(checkbox => {
       if (checkbox.checked) {
         selectedRepoIds.push(checkbox.getAttribute("data-id"));
       }
     });
-    
-    // Update collaborative projects
-    updateCollaborativeProjects(selectedRepoIds);
-    
-    // Close modal
-    repoModal.classList.add("hidden");
-    
-    // Show notification
-    showNotification(`Repository selection updated for ${currentFriend.name}`);
-    
-    // Update UI
-    displayFriends();
-    displayProjects();
-    projectsContainer.classList.remove("hidden");
-  }
   
-  function updateCollaborativeProjects(selectedRepoIds) {
-    // Remove friend from projects not selected anymore
+    if (!currentFriend) {
+      showNotification("No friend selected", true);
+      return;
+    }
+  
+    // Step 1: Remove this friend from projects that were unselected
     collaborativeProjects.forEach(project => {
       if (!selectedRepoIds.includes(project.repo_id)) {
-        project.collaborators = project.collaborators.filter(collab => collab.id !== currentFriend.id);
+        project.collaborators = project.collaborators.filter(c => c.id !== currentFriend.id);
       }
     });
-    
-    // Filter out projects with no collaborators
+  
+    // Step 2: Filter out projects with no collaborators
     collaborativeProjects = collaborativeProjects.filter(project => 
       project.collaborators && project.collaborators.length > 0
     );
-    
-    // Add friend to newly selected projects
+  
+    // Step 3: Add this friend to newly selected repos
     selectedRepoIds.forEach(repoId => {
-      const existingProject = collaborativeProjects.find(project => project.repo_id === repoId);
-      
-      if (existingProject) {
-        // Add friend as collaborator if not already
-        if (!existingProject.collaborators.some(collab => collab.id === currentFriend.id)) {
-          existingProject.collaborators.push({
+      const repo = userRepositories.find(r => r.id === repoId);
+      if (!repo) return;
+  
+      let project = collaborativeProjects.find(p => p.repo_id === repoId);
+  
+      if (project) {
+        // Already exists, just add friend if not already added
+        if (!project.collaborators.some(c => c.id === currentFriend.id)) {
+          project.collaborators.push({
             id: currentFriend.id,
             login: currentFriend.login,
             name: currentFriend.name,
@@ -657,40 +683,33 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
       } else {
-        // Create new project
-        const repo = userRepositories.find(repo => repo.id === repoId);
-        
-        if (repo) {
-          const projectId = generateId();
-          collaborativeProjects.push({
-            id: projectId,
-            repo_id: repoId,
-            name: repo.name,
-            description: repo.description,
-            created_at: new Date().toISOString(),
-            collaborators: [{
-              id: currentFriend.id,
-              login: currentFriend.login,
-              name: currentFriend.name,
-              avatar_url: currentFriend.avatar_url
-            }]
-          });
-          
-          // Initialize project files and commits
-          initializeProjectFiles(repoId, repo);
-        }
+        // Create a new project
+        const newProject = {
+          id: generateId(),
+          repo_id: repoId,
+          name: repo.name,
+          description: repo.description,
+          created_at: new Date().toISOString(),
+          collaborators: [{
+            id: currentFriend.id,
+            login: currentFriend.login,
+            name: currentFriend.name,
+            avatar_url: currentFriend.avatar_url
+          }]
+        };
+  
+        collaborativeProjects.push(newProject);
       }
     });
-    
-    // Update friend's collaborating status
-    const friendIndex = friends.findIndex(friend => friend.id === currentFriend.id);
-    if (friendIndex !== -1) {
-      friends[friendIndex].collaborating = selectedRepoIds.length > 0;
-      localStorage.setItem("githubFriends", JSON.stringify(friends));
-    }
-    
-    // Save to localStorage
+  
+    // Step 4: Save to localStorage
     localStorage.setItem("collaborativeProjects", JSON.stringify(collaborativeProjects));
+  
+    // Step 5: UI updates
+    repoModal.classList.add("hidden");
+    showNotification(`Selected repositories saved for ${currentFriend.name}`);
+    displayProjects(); // Refresh project list
+    displayFriends();  // Update friend cards if needed
   }
   
   function initializeProjectFiles(repoId, repo) {
@@ -742,52 +761,52 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function displayProjects() {
-    projectsList.innerHTML = "";
-    
-    if (collaborativeProjects.length === 0) {
-      projectsList.innerHTML = "<div class='no-projects'>No collaborative projects yet</div>";
-      return;
-    }
-    
-    // Sort projects by most recently created
-    const sortedProjects = [...collaborativeProjects].sort((a, b) => 
-      new Date(b.created_at) - new Date(a.created_at)
-    );
-    
-    sortedProjects.forEach(project => {
-      if (!project.collaborators || project.collaborators.length === 0) return;
-      
-      const projectCard = document.createElement("div");
-      projectCard.className = "project-card";
-      projectCard.setAttribute("data-id", project.id);
-      
-      // Get commit count
-      const commitCount = (projectCommits[project.id] || []).length;
-      
-      // Create collaborator avatars
-      const collaboratorAvatars = project.collaborators.map(collab => 
-        `<img class="collaborator-avatar" src="${collab.avatar_url}" alt="${collab.login}" title="${collab.name}">`
-      ).join("");
-      
-      projectCard.innerHTML = `
-        <h3>${project.name}</h3>
-        <p>${project.description || 'No description'}</p>
-        <div class="project-meta">
-          <span>${commitCount} commit${commitCount !== 1 ? 's' : ''}</span>
-          <div class="collaborators" title="Collaborators">
-            ${collaboratorAvatars}
-          </div>
-        </div>
-      `;
-      
-      projectsList.appendChild(projectCard);
-      
-      // Add event listener
-      projectCard.addEventListener("click", () => {
-        openProject(project.id);
-      });
-    });
+  console.log("displayProjects called"); // Log when the function is called
+
+  if (!projectsList) {
+    console.error("projectsList element not found in the DOM.");
+    return;
   }
+
+  // Clear the list
+  projectsList.innerHTML = "";
+
+  if (collaborativeProjects.length === 0) {
+    projectsList.innerHTML = "<div class='no-projects'>No collaborative projects yet</div>";
+    return;
+  }
+
+  // Sort projects by most recently created
+  const sortedProjects = [...collaborativeProjects].sort((a, b) => 
+    new Date(b.created_at) - new Date(a.created_at)
+  );
+
+  sortedProjects.forEach(project => {
+    if (!project.collaborators || project.collaborators.length === 0) return;
+
+    const projectCard = document.createElement("div");
+    projectCard.className = "project-card";
+    projectCard.setAttribute("data-id", project.id);
+
+    projectCard.innerHTML = `
+      <h3>${project.name}</h3>
+      <p>${project.description || 'No description'}</p>
+      <div class="project-meta">
+        <span>${(projectCommits[project.id] || []).length} commits</span>
+      </div>
+    `;
+
+    projectsList.appendChild(projectCard);
+
+    // Add event listener to open the project
+    projectCard.addEventListener("click", () => {
+      console.log("Project clicked:", project.id);
+      openProject(project.id);
+    });
+  });
+
+  console.log("Rendered Projects List:", projectsList.innerHTML); // Log the rendered HTML
+}
   
   function filterProjectsByFriend(friendId) {
     // Filter projects where the friend is a collaborator
@@ -842,31 +861,90 @@ document.addEventListener("DOMContentLoaded", () => {
   function openProject(projectId) {
     // Get project data
     currentProject = collaborativeProjects.find(project => project.id === projectId);
-    
+  
     if (!currentProject) {
       showNotification("Project not found", true);
       return;
     }
-    
-    // Update project details
+  
+    // ✅ Try to initialize project files if missing
+    if (!projectFiles[currentProject.id]) {
+      let repo = userRepositories.find(r => r.id === currentProject.repo_id);
+  
+      if (repo) {
+        initializeProjectFiles(currentProject.repo_id, repo);
+        localStorage.setItem("projectFiles", JSON.stringify(projectFiles));
+        console.log("🔄 Project files were missing. Initialized from local repo.");
+      } else {
+        // 🚨 Repo not found locally — fetch from GitHub
+        console.warn("⚠️ Repo not found locally, trying to fetch from GitHub...");
+  
+        fetch(`https://api.github.com/repositories/${currentProject.repo_id}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.id) {
+              repo = {
+                id: data.id.toString(),
+                name: data.name,
+                description: data.description,
+                language: data.language,
+                updated_at: data.updated_at,
+                html_url: data.html_url,
+                owner: data.owner?.login || "unknown"
+              };
+  
+              initializeProjectFiles(currentProject.repo_id, repo);
+              localStorage.setItem("projectFiles", JSON.stringify(projectFiles));
+              loadProjectFiles();
+              loadCodespaceFiles();
+              console.log("✅ Repo fetched and files initialized from GitHub API.");
+            } else {
+              showNotification("Could not fetch repository info", true);
+            }
+          })
+          .catch(err => {
+            console.error("GitHub fetch error:", err);
+            showNotification("Failed to load project files", true);
+          });
+      }
+    }
+  
+    // Update project details on screen
     if (projectName) projectName.textContent = currentProject.name;
     if (projectDescription) projectDescription.textContent = currentProject.description || 'No description';
-    
-    // Load project data
+  
+    // Load project data into tabs
     if (typeof loadProjectCommits === 'function') loadProjectCommits();
     if (typeof loadProjectFiles === 'function') loadProjectFiles();
     if (typeof loadCodespaceFiles === 'function') loadCodespaceFiles();
-    
-    // Show project details and hide projects list
+  
+    // Show project detail view
     if (projectsContainer && projectDetails) {
       projectsContainer.classList.add("hidden");
       projectDetails.classList.remove("hidden");
-    
-      // Reset to commits tab
-      const commitsTab = document.querySelector('.tab-btn[data-tab="commits"]');
-      if (commitsTab) commitsTab.click();
+  
+      // ✅ Manually activate Commits tab
+      tabBtns.forEach(b => b.classList.remove("active"));
+      tabContents.forEach(c => c.classList.remove("active"));
+  
+      const defaultTabBtn = document.querySelector('.tab-btn[data-tab="commits"]');
+      const defaultTabContent = document.getElementById('commits-tab');
+  
+      if (defaultTabBtn && defaultTabContent) {
+        defaultTabBtn.classList.add('active');
+        defaultTabContent.classList.add('active');
+      } else {
+        console.warn("⚠️ Commits tab or content not found in DOM.");
+      }
     }
+  
+    // Debug info
+    console.log("📂 Opening Project:", currentProject);
+    console.log("📄 Project Files:", projectFiles[currentProject.id]);
   }
+  
+
+  
   
   function loadProjectCommits() {
     if (!commitsList) return;
@@ -908,89 +986,65 @@ document.addEventListener("DOMContentLoaded", () => {
   
   function loadProjectFiles() {
     if (!filesList) return;
-    
+  
     filesList.innerHTML = "";
-    
-    const files = projectFiles[currentProject.id] || [];
-    
+  
+    // Get files for the current project
+    const files = projectFiles[currentProject?.id] || [];
+    console.log("Loading project files:", files); // Debugging log
+  
     if (files.length === 0) {
       filesList.innerHTML = "<div class='no-files'>No files in this project</div>";
       return;
     }
-    
+  
     // Sort files alphabetically
     const sortedFiles = [...files].sort((a, b) => a.name.localeCompare(b.name));
-    
+  
     sortedFiles.forEach(file => {
       const fileItem = document.createElement("div");
       fileItem.className = "file-item";
-      
-      // Determine file icon based on extension
-      let fileIcon = "📄";
-      const extension = file.name.split('.').pop().toLowerCase();
-      
-      if (extension === "html") fileIcon = "🌐";
-      else if (extension === "css") fileIcon = "🎨";
-      else if (extension === "js") fileIcon = "📜";
-      else if (extension === "json") fileIcon = "📋";
-      else if (extension === "md") fileIcon = "📝";
-      else if (extension === "py") fileIcon = "🐍";
-      
       fileItem.innerHTML = `
-        <div class="file-icon">${fileIcon}</div>
+        <div class="file-icon">📄</div>
         <div class="file-name">${file.name}</div>
         <div class="file-meta">${file.content.length} bytes</div>
       `;
-      
+  
       filesList.appendChild(fileItem);
     });
   }
   
   function loadCodespaceFiles() {
     if (!codespaceFiles) return;
-    
+  
     codespaceFiles.innerHTML = "";
-    
-    const files = projectFiles[currentProject.id] || [];
-    
+  
+    const files = projectFiles[currentProject?.id] || [];
+    console.log("Loading codespace files:", files); // Debugging log
+  
     if (files.length === 0) {
       codespaceFiles.innerHTML = "<div class='no-files'>No files in this project</div>";
       return;
     }
-    
+  
     // Sort files alphabetically
     const sortedFiles = [...files].sort((a, b) => a.name.localeCompare(b.name));
-    
+  
     sortedFiles.forEach(file => {
       const fileItem = document.createElement("div");
       fileItem.className = "codespace-file";
       fileItem.setAttribute("data-id", file.id);
-      
-      // Determine file icon based on extension
-      let fileIcon = "📄";
-      const extension = file.name.split('.').pop().toLowerCase();
-      
-      if (extension === "html") fileIcon = "🌐";
-      else if (extension === "css") fileIcon = "🎨";
-      else if (extension === "js") fileIcon = "📜";
-      else if (extension === "json") fileIcon = "📋";
-      else if (extension === "md") fileIcon = "📝";
-      else if (extension === "py") fileIcon = "🐍";
-      
-      fileItem.innerHTML = `
-        <span class="file-icon">${fileIcon}</span>
-        <span>${file.name}</span>
-      `;
-      
+      fileItem.innerHTML = `<span class="file-icon">📄</span><span>${file.name}</span>`;
+  
       codespaceFiles.appendChild(fileItem);
-      
+  
       // Add event listener
       fileItem.addEventListener("click", () => {
         openFileInEditor(file.id);
       });
     });
   }
-  
+
   function openFileInEditor(fileId) {
     // Check for unsaved changes
     if (unsavedChanges && currentFile) {
