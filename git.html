@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Git Quest - GitHub Friend Manager</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Git Quest - GitHub Collaboration Platform</title>
     <link rel="stylesheet" href="git.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 </head>
 <body>
-    <header>
+    <header style="background-color: black;">
         <div class="logo">
             <i class="fa-brands fa-git-alt"></i>
             <h1>Git Quest</h1>
         </div>
         <nav>
             <ul id="navbar-links">
-              <!-- Navbar links yaha inject honge -->
+                <li><a href="#" class="nav-link active" data-section="github-friends">Friends</a></li>
+                <li><a href="#" class="nav-link" data-section="projects-section">Projects</a></li>
             </ul>
-          </nav>
+        </nav>
         <div class="user-info">
             <div class="xp-container">
                 <span class="xp-label">XP:</span>
@@ -42,6 +42,7 @@
     </header>
 
     <main>
+        <!-- Friends Section -->
         <section id="github-friends" class="active-section">
             <div class="hero">
                 <h2>GitHub Friend Manager</h2>
@@ -107,57 +108,6 @@
                     </div>
                     <div id="friends-list" class="friends-grid">
                         <!-- Friends will be added here dynamically -->
-                        <div class="friend-card sample-card">
-                            <div class="friend-avatar">
-                                <img src="https://yt3.googleusercontent.com/yrfyzQYlBIj_a5A35QNnx1r-sxCo7od_YgmZmKjVDcoKi04s1fzusbExbd1cUw-Ymrx3n7F5kA=s900-c-k-c0x00ffffff-no-rj" alt="Sample Friend">
-                            </div>
-                            <div class="friend-info">
-                                <h3 class="friend-name">GitMaster</h3>
-                                <p class="friend-login">@gitmaster</p>
-                                <div class="friend-stats">
-                                    <span><i class="fa-solid fa-code-branch"></i> 42</span>
-                                    <span><i class="fa-solid fa-users"></i> 120</span>
-                                </div>
-                                <div class="friend-actions">
-                                    <a href="https://github.com" target="_blank" class="view-friend-btn">View Profile</a>
-                                    <button class="remove-friend-btn">Remove</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="friend-card sample-card">
-                            <div class="friend-avatar">
-                                <img src="https://static1.srcdn.com/wordpress/wp-content/uploads/2022/01/Master-Tigress-from-Kung-Fu-Panda.jpg" alt="Sample Friend">
-                            </div>
-                            <div class="friend-info">
-                                <h3 class="friend-name">DevPro</h3>
-                                <p class="friend-login">@devpro</p>
-                                <div class="friend-stats">
-                                    <span><i class="fa-solid fa-code-branch"></i> 38</span>
-                                    <span><i class="fa-solid fa-users"></i> 95</span>
-                                </div>
-                                <div class="friend-actions">
-                                    <a href="https://github.com" target="_blank" class="view-friend-btn">View Profile</a>
-                                    <button class="remove-friend-btn">Remove</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="friend-card sample-card">
-                            <div class="friend-avatar">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQijTncVRzTHCFNa6LTl6E9iJ_nyYINQE-VBQ&s" alt="Sample Friend">
-                            </div>
-                            <div class="friend-info">
-                                <h3 class="friend-name">GitGuru</h3>
-                                <p class="friend-login">@gitguru</p>
-                                <div class="friend-stats">
-                                    <span><i class="fa-solid fa-code-branch"></i> 56</span>
-                                    <span><i class="fa-solid fa-users"></i> 210</span>
-                                </div>
-                                <div class="friend-actions">
-                                    <a href="https://github.com" target="_blank" class="view-friend-btn">View Profile</a>
-                                    <button class="remove-friend-btn">Remove</button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -180,7 +130,149 @@
                 </div>
             </div>
         </section>
+
+        <!-- Projects Section -->
+        <section id="projects-section" class="section hidden-section">
+            <div class="hero">
+                <h2>Collaborative Projects</h2>
+                <p>Manage and collaborate on GitHub projects with your friends</p>
+            </div>
+
+            <div id="projects-container" class="projects-container hidden">
+                <div class="projects-header">
+                    <h2>Your Projects</h2>
+                    <div class="projects-filter">
+                        <button class="filter-btn active" data-filter="all">All Projects</button>
+                        <button class="filter-btn" data-filter="recent">Recently Updated</button>
+                        <button class="filter-btn" data-filter="most-commits">Most Commits</button>
+                    </div>
+                </div>
+                <div id="projects-list" class="projects-grid">
+                    <!-- Projects will be added here dynamically -->
+                </div>
+            </div>
+
+            <!-- Project Details View -->
+            <div id="project-details" class="project-details hidden">
+                <div class="project-header">
+                    <button id="back-to-projects" class="back-btn">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Projects
+                    </button>
+                    <h2 id="project-name">Project Name</h2>
+                    <p id="project-description">Project description will appear here.</p>
+                </div>
+                
+                <div class="project-tabs">
+                    <button class="tab-btn active" data-tab="commits">
+                        <i class="fa-solid fa-code-commit"></i> Commits
+                    </button>
+                    <button class="tab-btn" data-tab="files">
+                        <i class="fa-solid fa-folder"></i> Files
+                    </button>
+                    <button class="tab-btn" data-tab="codespace">
+                        <i class="fa-solid fa-code"></i> Codespace
+                    </button>
+                </div>
+                
+                <div id="commits-tab" class="tab-content active">
+                    <h3>Recent Commits</h3>
+                    <div id="commits-list" class="commits-list">
+                        <!-- Commits will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div id="files-tab" class="tab-content">
+                    <h3>Repository Files</h3>
+                    <div id="files-list" class="files-list">
+                        <!-- Files will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div id="codespace-tab" class="tab-content">
+                    <h3>Codespace</h3>
+                    <div class="codespace-container">
+                        <div class="file-explorer">
+                            <h4>Files</h4>
+                            <div id="codespace-files" class="codespace-files">
+                                <!-- Codespace files will be added here dynamically -->
+                            </div>
+                            <button id="add-file-btn" class="add-file-btn">
+                                <i class="fa-solid fa-plus"></i> Add New File
+                            </button>
+                        </div>
+                        <div class="code-editor">
+                            <div class="editor-header">
+                                <span id="current-file">No file selected</span>
+                                <button id="save-file-btn" disabled>Save</button>
+                            </div>
+                            <textarea id="code-editor" placeholder="Select a file to edit or create a new one"></textarea>
+                        </div>
+                    </div>
+                    <div class="commit-container">
+                        <input type="text" id="commit-message" placeholder="Enter commit message">
+                        <button id="commit-changes-btn">
+                            <i class="fa-solid fa-code-commit"></i> Commit Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="projects-features">
+                <div class="feature-card">
+                    <i class="fa-solid fa-code-branch"></i>
+                    <h3>Manage Repositories</h3>
+                    <p>Select repositories to collaborate on with your GitHub friends.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-code-commit"></i>
+                    <h3>Track Commits</h3>
+                    <p>View commit history and track changes to your collaborative projects.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-code"></i>
+                    <h3>Code Together</h3>
+                    <p>Use the built-in codespace to edit files and make commits directly.</p>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <!-- Repository Selection Modal -->
+    <div id="repo-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Select Repositories to Collaborate</h2>
+            <p id="repo-friend-name">Select repositories to collaborate with Friend</p>
+            <div class="repo-search">
+                <i class="fa-solid fa-search search-icon"></i>
+                <input type="text" id="repo-search-input" placeholder="Search repositories">
+            </div>
+            <div id="repo-list" class="repo-list">
+                <!-- Repositories will be loaded here -->
+            </div>
+            <div class="modal-actions">
+                <button id="save-repos-btn" class="save-repos-btn">
+                    <i class="fa-solid fa-save"></i> Save Selection
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add File Modal -->
+    <div id="add-file-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Add New File</h2>
+            <div class="file-input-container">
+                <input type="text" id="new-file-name" placeholder="Enter file name (e.g. index.js)">
+            </div>
+            <div class="modal-actions">
+                <button id="create-file-btn" class="create-file-btn">
+                    <i class="fa-solid fa-plus"></i> Create File
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div id="notification" class="notification hidden">
         <div class="notification-icon">
@@ -209,7 +301,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
     <script src="git.js"></script>
     <script src="navbar.js"></script>
 
