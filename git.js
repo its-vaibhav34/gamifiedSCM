@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // DOM Elements - Friends Section
+  // DOM Elements
   const usernameInput = document.getElementById("username-input");
   const searchBtn = document.getElementById("search-btn");
   const userProfile = document.getElementById("user-profile");
@@ -16,9 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const friendsContainer = document.getElementById("friends-container");
   const friendsList = document.getElementById("friends-list");
   const notification = document.getElementById("notification");
-  const notificationMessage = document.getElementById("notification-message");
   
-  // DOM Elements - Repository Modal
+  // Repository Modal Elements
   const repoModal = document.getElementById("repo-modal");
   const repoFriendName = document.getElementById("repo-friend-name");
   const repoSearchInput = document.getElementById("repo-search-input");
@@ -26,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveReposBtn = document.getElementById("save-repos-btn");
   const closeModalBtns = document.querySelectorAll(".close-modal");
   
-  // DOM Elements - Projects Section
+  // Projects Elements
   const projectsContainer = document.getElementById("projects-container");
   const projectsList = document.getElementById("projects-list");
   const projectDetails = document.getElementById("project-details");
@@ -38,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const commitsList = document.getElementById("commits-list");
   const filesList = document.getElementById("files-list");
   
-  // DOM Elements - Codespace
+  // Codespace Elements
   const codespaceFiles = document.getElementById("codespace-files");
   const codeEditor = document.getElementById("code-editor");
   const currentFileElement = document.getElementById("current-file");
@@ -49,15 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const createFileBtn = document.getElementById("create-file-btn");
   const commitMessage = document.getElementById("commit-message");
   const commitChangesBtn = document.getElementById("commit-changes-btn");
-  
-  // DOM Elements - Navigation
-  const navLinks = document.querySelectorAll(".nav-link");
-  const sections = document.querySelectorAll("section");
-  const darkModeToggle = document.getElementById("darkModeToggle");
-  const friendsFilterBtns = document.querySelectorAll(".friends-filter .filter-btn");
-  const projectsFilterBtns = document.querySelectorAll(".projects-filter .filter-btn");
 
-  // Current data
+  // Current user data
   let currentUser = null;
   let currentFriend = null;
   let currentProject = null;
@@ -70,13 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let collaborativeProjects = JSON.parse(localStorage.getItem("collaborativeProjects")) || [];
   let projectFiles = JSON.parse(localStorage.getItem("projectFiles")) || {};
   let projectCommits = JSON.parse(localStorage.getItem("projectCommits")) || {};
-  
-  // Check dark mode preference
-  const isDarkMode = localStorage.getItem("darkMode") === "true";
-  if (isDarkMode) {
-    document.body.classList.add("dark-mode");
-    darkModeToggle.checked = true;
-  }
 
   // Display friends if any exist
   if (friends.length > 0) {
@@ -90,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     projectsContainer.classList.remove("hidden");
   }
 
-  // Event Listeners - Friends Section
+  // Event Listeners
   searchBtn.addEventListener("click", searchUser);
   usernameInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
@@ -98,57 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   addFriendBtn.addEventListener("click", addFriend);
-  
-  // Event Listeners - Navigation
-  navLinks.forEach(link => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const targetSection = link.getAttribute("data-section");
-      
-      // Update active link
-      navLinks.forEach(l => l.classList.remove("active"));
-      link.classList.add("active");
-      
-      // Show target section, hide others
-      sections.forEach(section => {
-        if (section.id === targetSection) {
-          section.classList.remove("hidden-section");
-          section.classList.add("active-section");
-        } else {
-          section.classList.remove("active-section");
-          section.classList.add("hidden-section");
-        }
-      });
-    });
-  });
-  
-  // Dark mode toggle
-  darkModeToggle.addEventListener("change", () => {
-    document.body.classList.toggle("dark-mode");
-    localStorage.setItem("darkMode", darkModeToggle.checked);
-  });
-  
-  // Friends filter buttons
-  friendsFilterBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      friendsFilterBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      
-      const filter = btn.getAttribute("data-filter");
-      filterFriends(filter);
-    });
-  });
-  
-  // Projects filter buttons
-  projectsFilterBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      projectsFilterBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      
-      const filter = btn.getAttribute("data-filter");
-      filterProjects(filter);
-    });
-  });
   
   // Close modal buttons
   closeModalBtns.forEach(btn => {
@@ -198,104 +132,116 @@ document.addEventListener("DOMContentLoaded", () => {
     saveFileBtn.disabled = false;
   });
 
-  // Functions - User Search and Friends
+  // Functions
   async function searchUser() {
     const username = usernameInput.value.trim();
 
     if (!username) {
-        showNotification("Please enter a GitHub username", true);
-        return;
+      showNotification("Please enter a GitHub username", true);
+      return;
     }
 
     try {
-        // Show loading state
-        searchBtn.textContent = "Searching...";
-        searchBtn.disabled = true;
+      // Show loading state
+      searchBtn.textContent = "Searching...";
+      searchBtn.disabled = true;
 
-        // Fetch user data from GitHub API
-        const response = await fetch(`https://api.github.com/users/${username}`);
+      // Reset UI
+      userProfile.classList.add("hidden");
+      errorMessage.classList.add("hidden");
 
-        if (!response.ok) {
-            if (response.status === 404) {
-                throw new Error("User not found");
-            } else {
-                throw new Error(`GitHub API error: ${response.status}`);
-            }
+      // Fetch user data from GitHub API
+      const response = await fetch(`https://api.github.com/users/${username}`);
+      
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("API rate limit exceeded. Please try again later.");
+        } else if (response.status === 404) {
+          throw new Error("User not found");
+        } else {
+          throw new Error(`GitHub API error: ${response.status}`);
         }
+      }
 
-        const userData = await response.json();
-        currentUser = userData;
+      const userData = await response.json();
+      currentUser = userData;
 
-        // Display user data
-        userAvatar.src = userData.avatar_url;
-        userName.textContent = userData.name || userData.login;
-        userLogin.textContent = `@${userData.login}`;
-        userBio.textContent = userData.bio || "No bio available";
-        userRepos.textContent = userData.public_repos;
-        userFollowers.textContent = userData.followers;
-        userFollowing.textContent = userData.following;
-        userProfileLink.href = userData.html_url;
+      // Display user data
+      userAvatar.src = userData.avatar_url;
+      userName.textContent = userData.name || userData.login;
+      userLogin.textContent = `@${userData.login}`;
+      userBio.textContent = userData.bio || "No bio available";
+      userRepos.textContent = `${userData.public_repos} Repositories`;
+      userFollowers.textContent = `${userData.followers} Followers`;
+      userFollowing.textContent = `${userData.following} Following`;
+      userProfileLink.href = userData.html_url;
 
-        // Fetch user repositories
-        await fetchUserRepositories(username);
+      // Check if user is already a friend
+      const isFriend = friends.some((friend) => friend.id === userData.id);
+      if (isFriend) {
+        addFriendBtn.textContent = "Already a Friend";
+        addFriendBtn.disabled = true;
+      } else {
+        addFriendBtn.textContent = "Add as Friend";
+        addFriendBtn.disabled = false;
+      }
 
-        // Show user profile
-        userProfile.classList.remove("hidden");
+      // Show user profile
+      userProfile.classList.remove("hidden");
+      
+      // Fetch user repositories
+      await fetchUserRepositories(username);
     } catch (error) {
-        console.error("Error fetching user:", error);
-        errorMessage.querySelector("p").textContent = error.message || "User not found. Please try another username.";
-        errorMessage.classList.remove("hidden");
+      console.error("Error fetching user:", error);
+      errorMessage.querySelector("p").textContent = error.message || "User not found. Please try another username.";
+      errorMessage.classList.remove("hidden");
     } finally {
-        // Reset button state
-        searchBtn.textContent = "Search";
-        searchBtn.disabled = false;
+      // Reset button state
+      searchBtn.textContent = "Search";
+      searchBtn.disabled = false;
     }
-}
+  }
   
   async function fetchUserRepositories(username) {
     try {
-        // Fetch repositories from GitHub API
-        const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
-
-        if (!response.ok) {
-            if (response.status === 403) {
-                throw new Error("API rate limit exceeded. Please try again later.");
-            } else if (response.status === 404) {
-                throw new Error("No repositories found for this user.");
-            } else {
-                throw new Error(`GitHub API error: ${response.status}`);
-            }
+      // Fetch repositories from GitHub API
+      const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+      
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("API rate limit exceeded. Please try again later.");
+        } else {
+          throw new Error(`GitHub API error: ${response.status}`);
         }
+      }
 
-        const repos = await response.json();
-
-        // Map repository data
-        userRepositories = repos.map(repo => ({
-            id: repo.id.toString(),
-            name: repo.name,
-            description: repo.description,
-            language: repo.language,
-            updated_at: repo.updated_at,
-            html_url: repo.html_url,
-            owner: repo.owner.login
-        }));
-
-        console.log(`Fetched ${userRepositories.length} repositories for ${username}`);
+      const repos = await response.json();
+      userRepositories = repos.map(repo => ({
+        id: repo.id.toString(),
+        name: repo.name,
+        description: repo.description,
+        language: repo.language,
+        updated_at: repo.updated_at,
+        html_url: repo.html_url,
+        owner: repo.owner.login
+      }));
+      
+      console.log(`Fetched ${userRepositories.length} repositories for ${username}`);
     } catch (error) {
-        console.error("Error fetching repositories:", error);
-        showNotification(`Error fetching repositories: ${error.message}`, true);
+      console.error("Error fetching repositories:", error);
+      showNotification(`Error fetching repositories: ${error.message}`, true);
     }
-}
+  }
 
   function addFriend() {
     if (!currentUser) return;
-  
+
     // Check if already a friend
     if (friends.some((friend) => friend.id === currentUser.id)) {
       showNotification("This user is already your friend", true);
       return;
     }
-  
+
     // Add to friends array
     friends.push({
       id: currentUser.id,
@@ -303,25 +249,23 @@ document.addEventListener("DOMContentLoaded", () => {
       name: currentUser.name || currentUser.login,
       avatar_url: currentUser.avatar_url,
       html_url: currentUser.html_url,
-      repos: currentUser.public_repos,
-      followers: currentUser.followers,
       added_at: new Date().toISOString(),
     });
-  
+
     // Save to localStorage
     localStorage.setItem("githubFriends", JSON.stringify(friends));
-  
+
     // Update UI
     displayFriends();
     friendsContainer.classList.remove("hidden");
-  
+
     // Update add friend button
-    addFriendBtn.innerHTML = '<i class="fa-solid fa-check"></i> Already a Friend';
+    addFriendBtn.textContent = "Already a Friend";
     addFriendBtn.disabled = true;
-  
+
     // Show notification
     showNotification(`${currentUser.login} added as a friend!`);
-  
+    
     // Open repository selection modal
     openRepositoryModal(currentUser);
   }
@@ -335,94 +279,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Create friend cards
     sortedFriends.forEach((friend) => {
+      const friendCard = document.createElement("div");
+      friendCard.className = "friend-card";
+      
       // Check if friend has collaborative projects
       const hasProjects = collaborativeProjects.some(project => 
         project.collaborators.some(collab => collab.id === friend.id)
       );
       
-      const friendCard = document.createElement("div");
-      friendCard.className = "friend-card";
-      
       friendCard.innerHTML = `
-        <div class="friend-avatar">
-          <img src="${friend.avatar_url}" alt="${friend.login}">
-        </div>
+        <img class="friend-avatar" src="${friend.avatar_url}" alt="${friend.login}">
         <div class="friend-info">
-          <h3 class="friend-name">${friend.name}</h3>
-          <p class="friend-login">@${friend.login}</p>
-          <div class="friend-stats">
-            <span><i class="fa-solid fa-code-branch"></i> ${friend.repos || 0}</span>
-            <span><i class="fa-solid fa-users"></i> ${friend.followers || 0}</span>
-          </div>
-          <div class="friend-actions">
-            <a href="${friend.html_url}" target="_blank" class="view-friend-btn">
-              <i class="fa-solid fa-external-link-alt"></i> View Profile
-            </a>
-            <button class="select-repos-btn" data-id="${friend.id}">
-              <i class="fa-solid fa-code-branch"></i> Select Repositories
-            </button>
-            ${hasProjects ? `
-              <button class="view-projects-btn" data-id="${friend.id}">
-                <i class="fa-solid fa-project-diagram"></i> View Projects
-              </button>
-            ` : ''}
-            <button class="remove-friend-btn" data-id="${friend.id}">
-              <i class="fa-solid fa-user-minus"></i> Remove
-            </button>
-          </div>
+          <div class="friend-name">${friend.name}</div>
+          <div class="friend-login">@${friend.login}</div>
+        </div>
+        <div class="friend-actions">
+          <a href="${friend.html_url}" target="_blank" class="view-profile">View Profile</a>
+          <button class="select-repos" data-id="${friend.id}">Select Repositories</button>
+          ${hasProjects ? `<button class="view-projects" data-id="${friend.id}">View Projects</button>` : ''}
+          <button class="remove-friend" data-id="${friend.id}">Remove</button>
         </div>
       `;
 
       friendsList.appendChild(friendCard);
 
       // Add event listeners
-      const removeBtn = friendCard.querySelector(".remove-friend-btn");
+      const removeBtn = friendCard.querySelector(".remove-friend");
       removeBtn.addEventListener("click", () => {
         removeFriend(friend.id);
       });
       
-      const selectReposBtn = friendCard.querySelector(".select-repos-btn");
+      const selectReposBtn = friendCard.querySelector(".select-repos");
       selectReposBtn.addEventListener("click", async () => {
         await openRepositoryModal(friend);
       });
       
       if (hasProjects) {
-        const viewProjectsBtn = friendCard.querySelector(".view-projects-btn");
+        const viewProjectsBtn = friendCard.querySelector(".view-projects");
         viewProjectsBtn.addEventListener("click", () => {
           filterProjectsByFriend(friend.id);
-          
-          // Switch to projects section
-          document.querySelector('.nav-link[data-section="projects-section"]').click();
         });
       }
     });
-  }
-
-  function filterFriends(filter) {
-    // Get all friend cards
-    const friendCards = document.querySelectorAll(".friend-card");
-    
-    // Show all friends first
-    friendCards.forEach(card => {
-      card.style.display = "flex";
-    });
-    
-    if (filter === "all") return;
-    
-    // Sort and filter based on selected filter
-    let sortedFriends = [...friends];
-    
-    if (filter === "recent") {
-      sortedFriends.sort((a, b) => new Date(b.added_at) - new Date(a.added_at));
-    } else if (filter === "most-repos") {
-      sortedFriends.sort((a, b) => (b.repos || 0) - (a.repos || 0));
-    } else if (filter === "most-followers") {
-      sortedFriends.sort((a, b) => (b.followers || 0) - (a.followers || 0));
-    }
-    
-    // Clear and redisplay friends list
-    friendsList.innerHTML = "";
-    displayFriends();
   }
 
   function removeFriend(id) {
@@ -445,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update add friend button if current user is the removed friend
     if (currentUser && currentUser.id === id) {
-      addFriendBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Add as Friend';
+      addFriendBtn.textContent = "Add as Friend";
       addFriendBtn.disabled = false;
     }
 
@@ -481,16 +379,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showNotification(message, isError = false) {
-    notificationMessage.textContent = message;
+    notification.textContent = message;
     notification.className = "notification" + (isError ? " error" : "");
-    
-    // Update icon
-    const icon = notification.querySelector(".notification-icon i");
-    if (isError) {
-      icon.className = "fa-solid fa-circle-exclamation";
-    } else {
-      icon.className = "fa-solid fa-circle-check";
-    }
 
     // Show notification
     setTimeout(() => {
@@ -503,7 +393,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3000);
   }
   
-  // Functions - Repository Selection
   async function openRepositoryModal(friend) {
     currentFriend = friend;
     repoFriendName.textContent = `Select repositories to collaborate with ${friend.name}`;
@@ -544,29 +433,47 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function displayRepositories(repos) {
-    repoList.innerHTML = ""; // Clear the list
-
+    repoList.innerHTML = "";
+    
     if (repos.length === 0) {
-        repoList.innerHTML = "<div class='repo-item'>No repositories found</div>";
-        return;
+      repoList.innerHTML = "<div class='repo-item'>No repositories found</div>";
+      return;
     }
-
+    
+    // Get existing collaborations for this friend
+    const existingCollabs = collaborativeProjects
+      .filter(project => project.collaborators.some(collab => collab.id === currentFriend.id))
+      .map(project => project.repo_id);
+    
     repos.forEach(repo => {
-        const repoItem = document.createElement("div");
-        repoItem.className = "repo-item";
-
-        repoItem.innerHTML = `
-            <div>
-                <h3>${repo.name}</h3>
-                <p>${repo.description || "No description available"}</p>
-                <p><strong>Language:</strong> ${repo.language || "N/A"}</p>
-                <a href="${repo.html_url}" target="_blank">View Repository</a>
-            </div>
-        `;
-
-        repoList.appendChild(repoItem);
+      const isCollaborating = existingCollabs.includes(repo.id);
+      
+      const repoItem = document.createElement("div");
+      repoItem.className = "repo-item";
+      
+      // Determine language color
+      let languageColor = "#ccc";
+      if (repo.language === "JavaScript") languageColor = "#f1e05a";
+      else if (repo.language === "HTML") languageColor = "#e34c26";
+      else if (repo.language === "CSS") languageColor = "#563d7c";
+      else if (repo.language === "Python") languageColor = "#3572A5";
+      else if (repo.language === "Java") languageColor = "#b07219";
+      
+      repoItem.innerHTML = `
+        <input type="checkbox" class="repo-checkbox" data-id="${repo.id}" ${isCollaborating ? 'checked' : ''}>
+        <div>
+          <div class="repo-name">${repo.name}</div>
+          <div class="repo-description">${repo.description || 'No description'}</div>
+          <div class="repo-meta">
+            ${repo.language ? `<span class="repo-language"><span class="language-color" style="background-color: ${languageColor}"></span>${repo.language}</span>` : ''}
+            <span class="repo-updated">Updated ${formatDate(repo.updated_at)}</span>
+          </div>
+        </div>
+      `;
+      
+      repoList.appendChild(repoItem);
     });
-}
+  }
   
   function filterRepositories() {
     const searchTerm = repoSearchInput.value.toLowerCase();
@@ -578,57 +485,6 @@ document.addEventListener("DOMContentLoaded", () => {
     displayRepositories(filteredRepos);
   }
   
-  function commitChanges() {
-    if (!currentProject) {
-        showNotification("No project selected to commit changes.", true);
-        return;
-    }
-
-    if (!currentFile) {
-        showNotification("No file selected to commit changes.", true);
-        return;
-    }
-
-    const commitMsg = commitMessage.value.trim();
-
-    if (!commitMsg) {
-        showNotification("Please enter a commit message.", true);
-        return;
-    }
-
-    // Create a new commit
-    const newCommit = {
-        id: generateId(),
-        message: commitMsg,
-        date: new Date().toISOString(),
-        author: {
-            name: "Current User", // Replace with actual user name if available
-            avatar_url: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" // Replace with actual avatar URL if available
-        }
-    };
-
-    // Add commit to project commits
-    if (!projectCommits[currentProject.id]) {
-        projectCommits[currentProject.id] = [];
-    }
-
-    projectCommits[currentProject.id].push(newCommit);
-    localStorage.setItem("projectCommits", JSON.stringify(projectCommits));
-
-    // Update project last modified
-    currentProject.updated_at = new Date().toISOString();
-    localStorage.setItem("collaborativeProjects", JSON.stringify(collaborativeProjects));
-
-    // Clear the commit message input
-    commitMessage.value = "";
-
-    // Update UI
-    loadProjectCommits();
-
-    // Show notification
-    showNotification(`Changes committed successfully: "${commitMsg}"`);
-}
-
   function saveSelectedRepositories() {
     const checkboxes = repoList.querySelectorAll(".repo-checkbox");
     const selectedRepoIds = [];
@@ -691,7 +547,6 @@ document.addEventListener("DOMContentLoaded", () => {
             name: repo.name,
             description: repo.description,
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
             collaborators: [{
               id: currentFriend.id,
               login: currentFriend.login,
@@ -758,7 +613,6 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("projectCommits", JSON.stringify(projectCommits));
   }
   
-  // Functions - Projects
   function displayProjects() {
     projectsList.innerHTML = "";
     
@@ -769,7 +623,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Sort projects by most recently created
     const sortedProjects = [...collaborativeProjects].sort((a, b) => 
-      new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at)
+      new Date(b.created_at) - new Date(a.created_at)
     );
     
     sortedProjects.forEach(project => {
@@ -789,64 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <h3>${project.name}</h3>
         <p>${project.description || 'No description'}</p>
         <div class="project-meta">
-          <span><i class="fa-solid fa-code-commit"></i> ${commitCount} commit${commitCount !== 1 ? 's' : ''}</span>
-          <div class="collaborators" title="Collaborators">
-            ${collaboratorAvatars}
-          </div>
-        </div>
-      `;
-      
-      projectsList.appendChild(projectCard);
-      
-      // Add event listener
-      projectCard.addEventListener("click", () => {
-        openProject(project.id);
-      });
-    });
-  }
-  
-  function filterProjects(filter) {
-    // Get all projects
-    let sortedProjects = [...collaborativeProjects];
-    
-    if (filter === "recent") {
-      sortedProjects.sort((a, b) => 
-        new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at)
-      );
-    } else if (filter === "most-commits") {
-      sortedProjects.sort((a, b) => {
-        const aCommits = (projectCommits[a.id] || []).length;
-        const bCommits = (projectCommits[b.id] || []).length;
-        return bCommits - aCommits;
-      });
-    }
-    
-    // Clear and redisplay projects list
-    projectsList.innerHTML = "";
-    
-    if (sortedProjects.length === 0) {
-      projectsList.innerHTML = "<div class='no-projects'>No collaborative projects yet</div>";
-      return;
-    }
-    
-    sortedProjects.forEach(project => {
-      const projectCard = document.createElement("div");
-      projectCard.className = "project-card";
-      projectCard.setAttribute("data-id", project.id);
-      
-      // Get commit count
-      const commitCount = (projectCommits[project.id] || []).length;
-      
-      // Create collaborator avatars
-      const collaboratorAvatars = project.collaborators.map(collab => 
-        `<img class="collaborator-avatar" src="${collab.avatar_url}" alt="${collab.login}" title="${collab.name}">`
-      ).join("");
-      
-      projectCard.innerHTML = `
-        <h3>${project.name}</h3>
-        <p>${project.description || 'No description'}</p>
-        <div class="project-meta">
-          <span><i class="fa-solid fa-code-commit"></i> ${commitCount} commit${commitCount !== 1 ? 's' : ''}</span>
+          <span>${commitCount} commit${commitCount !== 1 ? 's' : ''}</span>
           <div class="collaborators" title="Collaborators">
             ${collaboratorAvatars}
           </div>
@@ -893,7 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <h3>${project.name}</h3>
         <p>${project.description || 'No description'}</p>
         <div class="project-meta">
-          <span><i class="fa-solid fa-code-commit"></i> ${commitCount} commit${commitCount !== 1 ? 's' : ''}</span>
+          <span>${commitCount} commit${commitCount !== 1 ? 's' : ''}</span>
           <div class="collaborators" title="Collaborators">
             ${collaboratorAvatars}
           </div>
@@ -957,6 +754,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const commitItem = document.createElement("div");
       commitItem.className = "commit-item";
       
+      const date = new Date(commit.date);
       const formattedDate = formatDate(commit.date);
       
       commitItem.innerHTML = `
@@ -1102,10 +900,6 @@ document.addEventListener("DOMContentLoaded", () => {
     projectFiles[currentProject.id] = files;
     localStorage.setItem("projectFiles", JSON.stringify(projectFiles));
     
-    // Update project last modified
-    currentProject.updated_at = new Date().toISOString();
-    localStorage.setItem("collaborativeProjects", JSON.stringify(collaborativeProjects));
-    
     // Update UI
     saveFileBtn.disabled = true;
     unsavedChanges = false;
@@ -1116,44 +910,120 @@ document.addEventListener("DOMContentLoaded", () => {
   
   function createNewFile() {
     const fileName = newFileName.value.trim();
-
+    
     if (!fileName) {
-        showNotification("Please enter a file name", true);
-        return;
+      showNotification("Please enter a file name", true);
+      return;
     }
-
+    
     // Check if file already exists
     const files = projectFiles[currentProject.id] || [];
     if (files.some(f => f.name === fileName)) {
-        showNotification("A file with this name already exists", true);
-        return;
+      showNotification("A file with this name already exists", true);
+      return;
     }
-
-    // Create a new file
+    
+    // Create new file
     const newFile = {
-        id: generateId(),
-        name: fileName,
-        content: ""
+      id: generateId(),
+      name: fileName,
+      content: ""
     };
-
+    
     // Add to project files
     files.push(newFile);
     projectFiles[currentProject.id] = files;
     localStorage.setItem("projectFiles", JSON.stringify(projectFiles));
-
-    // Update project last modified
-    currentProject.updated_at = new Date().toISOString();
-    localStorage.setItem("collaborativeProjects", JSON.stringify(collaborativeProjects));
-
+    
     // Update UI
     loadCodespaceFiles();
-
-    // Open the new file in the editor
-    openFileInEditor(newFile.id);
-
-    // Close the "Add File" modal
+    
+    // Open new file in editor
+    setTimeout(() => {
+      openFileInEditor(newFile.id);
+    }, 100);
+    
+    // Close modal
     addFileModal.classList.add("hidden");
-
-    // Show a notification
-    showNotification(`File "${fileName}" created successfully!`);
-}});
+    
+    // Show notification
+    showNotification(`File ${fileName} created`);
+  }
+  
+  function commitChanges() {
+    const message = commitMessage.value.trim();
+    
+    if (!message) {
+      showNotification("Please enter a commit message", true);
+      return;
+    }
+    
+    // Check for unsaved changes
+    if (unsavedChanges && currentFile) {
+      if (confirm("You have unsaved changes. Do you want to save them before committing?")) {
+        saveCurrentFile();
+      }
+    }
+    
+    // Create new commit
+    const commits = projectCommits[currentProject.id] || [];
+    
+    const newCommit = {
+      id: generateId(),
+      message: message,
+      date: new Date().toISOString(),
+      author: {
+        name: "You",
+        avatar_url: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+      }
+    };
+    
+    // Add to project commits
+    commits.push(newCommit);
+    projectCommits[currentProject.id] = commits;
+    localStorage.setItem("projectCommits", JSON.stringify(projectCommits));
+    
+    // Update UI
+    loadProjectCommits();
+    
+    // Clear commit message
+    commitMessage.value = "";
+    
+    // Show notification
+    showNotification("Changes committed successfully");
+  }
+  
+  // Helper functions
+  function generateId() {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  }
+  
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now - date);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) {
+      // Today
+      return `today at ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+    } else if (diffDays === 1) {
+      // Yesterday
+      return `yesterday at ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+    } else if (diffDays < 7) {
+      // This week
+      return `${diffDays} days ago`;
+    } else if (diffDays < 30) {
+      // This month
+      const weeks = Math.floor(diffDays / 7);
+      return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+    } else if (diffDays < 365) {
+      // This year
+      const months = Math.floor(diffDays / 30);
+      return `${months} month${months > 1 ? 's' : ''} ago`;
+    } else {
+      // More than a year
+      return date.toLocaleDateString();
+    }
+  }
+});
