@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const response = await fetch(`https://api.github.com/users/${username}`, {
             method: 'GET',
             headers: {
-              'Authorization': 'Bearer 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',
+              'Authorization': 'Bearer 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',
               'Accept': 'application/vnd.github+json'
             }
           })
