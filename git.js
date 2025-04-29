@@ -205,15 +205,18 @@ document.addEventListener("DOMContentLoaded", () => {
   async function fetchUserRepositories(username) {
     try {
       // Fetch repositories from GitHub API
-      const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
-      
-      if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error("API rate limit exceeded. Please try again later.");
-        } else {
-          throw new Error(`GitHub API error: ${response.status}`);
+        // Fetch user data from GitHub API
+      const response = await fetch(`https://api.github.com/users/${username}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer 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',
+          'Accept': 'application/vnd.github+json'
         }
-      }
+      });
+      
+      
+      const userData = await response.json();
+      currentUser = userData;
 
       const repos = await response.json();
       userRepositories = repos.map(repo => ({
