@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(`https://api.github.com/users/${username}`, {
         method: 'GET',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': 'Bearer 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',
           'Accept': 'application/vnd.github+json'
         }
       });
@@ -225,6 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   
       const userData = data;  // Use the parsed data
+      currentUser = userData; // ✅ Set current user so "Add Friend" works
   
       // Display user data with null checks
       if (userAvatar) userAvatar.src = userData.avatar_url;
@@ -767,6 +768,7 @@ console.log("Repos to show:", userRepositories);
       }
     }];
     localStorage.setItem("projectCommits", JSON.stringify(projectCommits));
+    console.log("Initializing project files for repo:", repo);
   }
   
   function displayProjects() {
@@ -915,6 +917,15 @@ console.log("Repos to show:", userRepositories);
             console.error("GitHub fetch error:", err);
             showNotification("Failed to load project files", true);
           });
+
+          const editorSection = document.getElementById("code-editor-section");
+          if (editorSection) {
+            console.log("Making Codespace section visible.");
+            editorSection.classList.remove("hidden");
+          } else {
+            console.error("Codespace section not found in DOM.");
+          }
+
       }
     }
   
