@@ -162,12 +162,12 @@ code {
 }
 
 pre {
-    background-color: #f6f8fa;
-    padding: 10px;
+    background-color: #a4b9cf;
+    padding: 11px;
     border-radius: 6px;
     overflow-x: auto;
     border: 1px solid #e1e4e8;
-    margin: 10px 0;
+    margin: 11px 0;
 }
 
 .message-content a {
