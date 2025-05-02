@@ -100,18 +100,18 @@ body {
 }
 
 #user-input:focus {
-    border-color: #0366d6;
+    border-color: #39c46a;
 }
 
 #send-btn {
     margin-left: 10px;
     padding: 0 20px;
-    background-color: #2ea44f;
+    background-color: #66ac7a;
     color: white;
     border: none;
     border-radius: 25px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 601;
     transition: background-color 0.2s;
 }
 
@@ -121,7 +121,7 @@ body {
 
 .typing-indicator {
     display: flex;
-    padding: 13px 18px;
+    padding: 14px 19px;
     background-color: #f0f0f0;
     border-radius: 18px;
     width: fit-content;
@@ -155,7 +155,7 @@ body {
 code {
     font-family: monospace;
     background-color: #f6f8fa;
-    padding: 2px 5px;
+    padding: 3px 5px;
     border-radius: 3px;
     font-size: 0.9em;
     border: 1px solid rgba(226, 221, 226, 0.533);
